@@ -133,12 +133,14 @@ public class Principal {
         
          ComprobarEnlaces enlaces = new ComprobarEnlaces(url,dominio_y_protocolo,idAnalisis);
          enlaces.comprobar();
-          /*  
-         ComprobarTexto texto = new ComprobarTexto(url);
+         
+         
+          
+         ComprobarTexto texto = new ComprobarTexto(url,idAnalisis);
         texto.comprobar();
         texto.calcularDensidad();
           
-          */ 
+          
            
             //System.out.println(doc.html());
             

@@ -4,6 +4,7 @@
  */
 package proyecto;
 
+import baseDatos.InsertarTexto;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import org.jsoup.nodes.Document;
  */
 public class ComprobarTexto {
     String url;
-
+    String idAnalisis;
     public String getUrl() {
         return url;
     }
@@ -27,9 +28,12 @@ public class ComprobarTexto {
         this.url = url;
     }
 
-    public ComprobarTexto(String url) {
+    public ComprobarTexto(String url, String idAnalisis) {
         this.url = url;
+        this.idAnalisis = idAnalisis;
     }
+
+   
     
     public void comprobar() {
         System.out.println("------------------TEXTO DE LA URL------------------------");
@@ -85,15 +89,19 @@ public class ComprobarTexto {
             int palabrasAmostrar = 0;
              for (Map.Entry<String, Integer> entry : listaOcurrencias) {
                 String palabra = entry.getKey();
-                int ocurrencias = entry.getValue();
-                float porcentaje = ((float) ocurrencias / totalPalabras) * 100;
+                int apariciones = entry.getValue();
+                float porcentaje = ((float) apariciones / totalPalabras) * 100;
                 porcentaje = Math.round(porcentaje * 100.0f) / 100.0f; //quitamos todos los decimales y dejamos solo dos
 
                 //System.out.printf("%s: %.2f%%\n", palabra, porcentaje);
                 palabrasAmostrar++;
-                 System.out.println(palabrasAmostrar+" "+palabra+" "+porcentaje+"%  --> "+ocurrencias+" veces");
-                if(palabrasAmostrar >=50) break;
+                 System.out.println(palabrasAmostrar+" "+palabra+" "+porcentaje+"%  --> "+apariciones+" veces");
+               
                 
+                // insertaTexto(String id_analisis, String palabra, String frecuencia, String densidad) 
+               InsertarTexto.insertaTexto(idAnalisis, palabra,apariciones+"",porcentaje+"" );
+               
+                if(palabrasAmostrar >=50) break;
             }
 
             
