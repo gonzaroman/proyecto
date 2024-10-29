@@ -49,8 +49,8 @@ public class ComprobarTexto {
     
     public void calcularDensidad(){
         try {
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
-        .get();
+            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
+        //.get();
             // Extraer todo el texto visible de la página
             String texto_de_la_url = doc.text();
             

@@ -42,20 +42,32 @@ public class ComprobarEstructura {
 try {
             
             // Descargar y analizar el HTML de la página web
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
-        .get();
+            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
+       // .get();
+            
+            
+            //control analisis H1
             
             String title = doc.title();
-           // Elements metaDescription = doc.select("meta[name=description]");
             
+            if (title.isEmpty()){
+                System.out.println("titulo correcto");
+            }else{
+                 System.out.println("Título de la página: \n" + title);
+            }
+             
             
-            System.out.println("Título de la página: \n" + title);
-           // System.out.println("description de la página: " + description);
+           
+           
            
             Element metaDescription = doc.selectFirst("meta[name=description]");
             String description = (metaDescription != null) ? metaDescription.attr("content") : "No tiene meta descripción";
 
             System.out.println("Meta Descripion: "+description);
+            
+            
+            
+            
            String currentH1 = null;
            
            Elements h1Elements = doc.select("h1");
@@ -74,29 +86,7 @@ try {
                 }
             }
             
-           /* Elements h2Elements = doc.select("h2");
-             Elements h3Elements = doc.select("h3");
-              Elements h4Elements = doc.select("h4");
-            System.out.println("\nEncabezados H2:");
-            for (Element h2 : h2Elements) {
-                System.out.println("h2 "+h2.text());
-                
-               
-                for (Element h3 : h3Elements) {
-                System.out.println("--h3-----"+h3.text());
-                }
-               
-                for (Element h4 : h4Elements) {
-                System.out.println("-------h4-------"+h4.text());
-                
-                }
-            }
-            
-           // Elements h3Elements = doc.select("h3");
-            System.out.println("\nEncabezados H3:");
-            for (Element h3 : h3Elements) {
-                System.out.println(h3.text());
-            }*/
+          
            
            // Seleccionamos todos los encabezados H2, H3 y H4
             Elements headers = doc.select("h2, h3, h4");
@@ -107,10 +97,7 @@ try {
 
             for (Element header : headers) {
                 // Si encontramos un H2, lo guardamos como el encabezado actual
-               /* if (header.tagName().equals("h2")) {
-                    currentH2 = header.text(); // Guardamos el texto del H2
-                    System.out.println("\nH2: " + currentH2);
-                }*/
+           
                 
                 if (header.tagName().equals("h2") ) {
                     System.out.println("   H2: " + header.text());

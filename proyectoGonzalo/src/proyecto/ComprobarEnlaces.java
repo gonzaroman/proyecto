@@ -4,6 +4,8 @@
  */
 package proyecto;
 
+import baseDatos.InsertarEnlaces;
+import baseDatos.InsertarEnlacesResumen;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +19,10 @@ import org.jsoup.select.Elements;
 public class ComprobarEnlaces {
     String url;
     String dominio_y_protocolo;
-
+    String idAnalisis;
+    String url_enlace,tipo,anchor_text,estado;
+    
+    
     public String getUrl() {
         return url;
     }
@@ -34,10 +39,18 @@ public class ComprobarEnlaces {
         this.dominio_y_protocolo = dominio_y_protocolo;
     }
 
-    public ComprobarEnlaces(String url, String dominio_y_protocolo) {
+    /*public ComprobarEnlaces(String url, String dominio_y_protocolo) {
         this.url = url;
         this.dominio_y_protocolo = dominio_y_protocolo;
+    }*/
+
+    public ComprobarEnlaces(String url, String dominio_y_protocolo, String idAnalisis) {
+        this.url = url;
+        this.dominio_y_protocolo = dominio_y_protocolo;
+        this.idAnalisis = idAnalisis;
     }
+    
+    
 
      int internalLinks = 0, externalLinks = 0, relativeLinks = 0,enlacesRotos=0,enlacesCorrectos=0;
      
@@ -49,81 +62,85 @@ public class ComprobarEnlaces {
          //devuelve true si la url está correcta, si es un 404 da error
         
         // Cantidad de enlaces internos y externos
-           try {
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
-        .get();
+          try {
+            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
+                    //.get();
             Elements links = doc.select("a[href]");
-           
+
             for (Element link : links) {
                 String href = link.attr("href");
-                
+
                 // Filtrar enlaces no HTTP/HTTPS
-    if (href.startsWith("tel:") || href.startsWith("mailto:")) {
-        System.out.println("ENLACE NO VÁLIDO: " + href);
-        continue; // Saltar estos enlaces
-    }
-                
-                
-                
-                
+                if (href.startsWith("tel:") || href.startsWith("mailto:")) {
+                    System.out.println("ENLACE NO VÁLIDO: " + href);
+                    continue; // Saltar estos enlaces
+                }
+
                 if (href.startsWith(dominio_y_protocolo) && !href.startsWith("#")) {
                     internalLinks++;
                     System.out.println("INTERNO:");
+                    tipo = "INTERNO";
                     System.out.println(href);
-                    System.out.println("Anchor text: "+link.text());
-                    compruebaRoto(href);
-                    
-                    
+                    url_enlace = href;
+                    System.out.println("Anchor text: " + link.text());
+                    anchor_text = link.text();
+                    estado = compruebaRoto(href);
+
                 } else if (href.startsWith("http") && !href.startsWith("#") && !href.startsWith(dominio_y_protocolo)) {
                     externalLinks++;
-                    
+
                     System.out.println("EXTERNO");
+                    tipo = "EXTERNO";
                     System.out.println(href);
-                     System.out.println("Anchor text: "+link.text());
-                    
-                    compruebaRoto(href);
-                    
-                    
+                    url_enlace = href;
+                    System.out.println("Anchor text: " + link.text());
+                    anchor_text = link.text();
+                    estado = compruebaRoto(href);
+
                 } else if (!href.startsWith("http") && !href.startsWith("#") && !href.startsWith(dominio_y_protocolo)) {
-                    System.out.println("RELATIVO");
+                    System.out.println("INTERNO/RELATIVO");
                     System.out.println(href);
-                  //  System.out.println("prueba print dominio: "+dominio_y_protocolo);
-                  if (!href.startsWith("/")) {
-                         href = "/" + href;
-                     }
-                    System.out.println("ruta completa: "+dominio_y_protocolo+href);
-                     System.out.println("Anchor text: "+link.text());
+                    //  System.out.println("prueba print dominio: "+dominio_y_protocolo);
+                    if (!href.startsWith("/")) {
+                        href = "/" + href;
+                    }
+                    System.out.println("ruta completa: " + dominio_y_protocolo + href);
+                    System.out.println("Anchor text: " + link.text());
                     relativeLinks++;
                     internalLinks++;
                     
-                   /* ComprobarEstado estadoURL = new ComprobarEstado(dominio_y_protocolo+href);
-         
-                     System.out.println(estadoURL.comprobar());
-                     
-                     if(!estadoURL.comprobar()){
-                         enlacesRotos++;
-                     }else{
-                         enlacesCorrectos++;
-                     }*/
+                    tipo="INTERNO";
+                    url_enlace= dominio_y_protocolo + href;
+                    anchor_text = link.text();
                     
-                   compruebaRoto(dominio_y_protocolo+href);
+                    estado = compruebaRoto(dominio_y_protocolo + href);
                     
+                    
+
                 }
                 
-               
+                InsertarEnlaces.insertaEnlaces(idAnalisis, url_enlace,tipo,anchor_text,estado);
                 
                 
-            }
-            System.out.println("\nEnlaces internos: " + internalLinks);
+                  
+
+            }//fin del for
+            
+            System.out.println("Enlaces internos: " + internalLinks);
             System.out.println("Enlaces externos: " + externalLinks);
             System.out.println("Enlaces internos relativos: " + relativeLinks);
-               System.out.println("Enlaces apuntan a url rota: "+enlacesRotos);
-               System.out.println("Enlaces apuntan url correcta: "+enlacesCorrectos);
-        } catch (IOException iOException) {
+            System.out.println("Enlaces apuntan a url rota: " + enlacesRotos);
+            System.out.println("Enlaces apuntan url correcta: " + enlacesCorrectos);
             
-               System.out.println("algun enlace raro");
+            
+            InsertarEnlacesResumen.insertaEnlacesResumen(idAnalisis, internalLinks+"", externalLinks+"", enlacesRotos+"", estado);
+            
+            
+        } catch (IOException iOException) {
+
+            System.out.println("algun enlace raro");
         }
-           
+
            
            
            
@@ -132,7 +149,7 @@ public class ComprobarEnlaces {
     }
     
     
-    public void compruebaRoto(String href){
+    public String compruebaRoto(String href){
         ComprobarEstado estadoURL = new ComprobarEstado(href);
          
                      System.out.println(estadoURL.comprobar());
@@ -141,9 +158,11 @@ public class ComprobarEnlaces {
                      if(!estadoURL.comprobar()){
                          enlacesRotos++;
                          System.out.println(rojo+"INCORRECTO: "+estadoURL.devolverCodigoEstado());
+                         return "Error";
                      }else{
                          System.out.println(verde+"CORRECTO: "+estadoURL.devolverCodigoEstado());
                          enlacesCorrectos++;
+                         return "Correcto";
                      }
     
     
