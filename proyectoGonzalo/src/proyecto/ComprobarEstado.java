@@ -45,7 +45,18 @@ public class ComprobarEstado {
             // Abrir la conexión
             HttpURLConnection connection = (HttpURLConnection) urlEstado.openConnection();
             connection.setRequestMethod("GET");
+
+            // Configurar el User-Agent para evitar bloqueos
+            
+            // Configurar varias cabeceras para simular un navegador real
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36");
+            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.9");
+            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+            connection.setRequestProperty("Connection", "keep-alive");
+            connection.setRequestProperty("Upgrade-Insecure-Requests", "1");
+
             statusMessage = connection.getResponseMessage();
+
             connection.setInstanceFollowRedirects(true); // Para seguir redirecciones
 
             // Obtener el código de respuesta
