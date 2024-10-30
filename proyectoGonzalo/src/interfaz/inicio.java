@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import proyecto.Ejecutar;
 /**
  *
@@ -149,14 +150,37 @@ public class inicio extends javax.swing.JFrame {
 
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
-        String url = jTextFieldURL.getText();
+       /* String url = jTextFieldURL.getText();
         try {
-            Ejecutar.hacer(url);
+            Ejecutar.hacer(url); //esto llama a la clase que ejecuta todos los procesos para recorrer la url y guardarlo en la base de datos
         } catch (MalformedURLException ex) {
             Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        selectDominio(jListDominios);
+        selectDominio(jListDominios);*/
+       
+        String url = jTextFieldURL.getText();
+
+    // Crear un SwingWorker para ejecutar el análisis en segundo plano
+    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        @Override
+        protected Void doInBackground() {
+            try {
+                Ejecutar.hacer(url); // Ejecuta el proceso en segundo plano
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return null;
+        }
+         @Override
+        protected void done() {
+            // Ejecutado en el hilo de la GUI al completar doInBackground
+            selectDominio(jListDominios); // Actualizar la lista una vez terminado
+        }
+    };
+
+    // Ejecuta el SwingWorker
+    worker.execute();
         
     }//GEN-LAST:event_jButtonAnalizarActionPerformed
 
