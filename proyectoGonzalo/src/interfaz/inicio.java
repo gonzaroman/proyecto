@@ -11,13 +11,17 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
+import javax.swing.table.DefaultTableModel;
 import proyecto.Ejecutar;
+import java.sql.Timestamp;
 /**
  *
- * @author 6003262
+ * @author Gonzalo Román Márquez
  */
 public class inicio extends javax.swing.JFrame {
 
@@ -32,6 +36,8 @@ public class inicio extends javax.swing.JFrame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
             selectDominio(jListDominios);
             selectUrlsAnalizadas(jListUrlsAnalizadas);
+            selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+             selectDominioTabla(jTableDominios);
         }
     });
         
@@ -57,6 +63,10 @@ public class inicio extends javax.swing.JFrame {
         jButtonAnalizar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListUrlsAnalizadas = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTableUrlsAnalizadas = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTableDominios = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,9 +76,12 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jTabbedPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jPanel1.setForeground(new java.awt.Color(255, 255, 204));
 
         jListDominios.setBackground(new java.awt.Color(204, 255, 255));
+        jListDominios.setBorder(null);
         jListDominios.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -83,6 +96,7 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
+        jListUrlsAnalizadas.setBorder(null);
         jListUrlsAnalizadas.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -90,34 +104,74 @@ public class inicio extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jListUrlsAnalizadas);
 
+        jTableUrlsAnalizadas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(jTableUrlsAnalizadas);
+
+        jTableDominios.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(jTableDominios);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jButtonAnalizar)
-                .addGap(0, 286, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButtonAnalizar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(319, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAnalizar))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonAnalizar))
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
@@ -126,11 +180,11 @@ public class inicio extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 878, Short.MAX_VALUE)
+            .addGap(0, 1366, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 383, Short.MAX_VALUE)
+            .addGap(0, 567, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("tab2", jPanel3);
@@ -140,22 +194,22 @@ public class inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(907, 907, 907)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(524, 524, 524)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -191,6 +245,8 @@ public class inicio extends javax.swing.JFrame {
             // Ejecutado en el hilo de la GUI al completar doInBackground
             selectDominio(jListDominios); // Actualizar la lista una vez terminado
             selectUrlsAnalizadas(jListUrlsAnalizadas);
+            selectDominioTabla(jTableDominios);
+            selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
         }
     };
 
@@ -200,7 +256,13 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAnalizarActionPerformed
 
     public static void selectDominio(JList<String> jListDominios) {
-        String sql = "SELECT dominio FROM Analisis group by dominio order by fecha_analisis Desc";
+       // String sql = "SELECT dominio FROM Analisis group by dominio order by fecha_analisis Desc";
+        String sql = "SELECT dominio " +
+             "FROM Analisis " +
+             "WHERE fecha_analisis = (SELECT MAX(fecha_analisis) FROM Analisis AS a WHERE a.dominio = Analisis.dominio) " +
+             "GROUP BY dominio " +
+             "ORDER BY MAX(fecha_analisis) DESC";
+        
         DefaultListModel<String> listModel = new DefaultListModel<>(); // Modelo para el JList
 
         try (Connection conn = Consultas.connect();
@@ -224,8 +286,40 @@ public class inicio extends javax.swing.JFrame {
         }
     }
     
+     public static void selectDominioTabla(JTable jTableDominios) {
+
+               
+        String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha " +
+             "FROM Analisis " +
+             "GROUP BY dominio " +
+             "ORDER BY ultima_fecha DESC";
+        
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"DOMINIO", "CANTIDAD ANALISIS"}, 0);
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String dominio = rs.getString("dominio");
+                int cantidadAnalisis = rs.getInt("cantidad_analisis");
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{dominio,cantidadAnalisis});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableDominios.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
+    
+    
     public static void selectUrlsAnalizadas(JList<String> jListUrlsAnalizadas) {
-        String sql = "SELECT url_principal FROM Analisis order by fecha_analisis Desc";
+        String sql = "SELECT url_principal, fecha_analisis FROM Analisis order by fecha_analisis Desc";
         DefaultListModel<String> listModel = new DefaultListModel<>(); // Modelo para el JList
 
         try (Connection conn = Consultas.connect();
@@ -235,9 +329,11 @@ public class inicio extends javax.swing.JFrame {
             // Iterar sobre los resultados de la consulta y agregar al modelo de lista
             while (rs.next()) {
                 String urlAnalizada = rs.getString("url_principal");
+                String fechaAnalisis = rs.getString("fecha_analisis");
+                
                 
                
-                listModel.addElement(urlAnalizada); // Añadir la entrada al modelo
+                listModel.addElement(urlAnalizada+fechaAnalisis); // Añadir la entrada al modelo
                 
                 System.out.println(urlAnalizada);
             }
@@ -248,6 +344,40 @@ public class inicio extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
+    
+    public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
+    String sql = "SELECT url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
+    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis"}, 0);
+    
+   SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+
+    try (Connection conn = Consultas.connect();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+
+        // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+        while (rs.next()) {
+             String urlAnalizada = rs.getString("url_principal");
+            
+            // Obtener la fecha y formatearla
+            Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
+            String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
+            // Obtener la fecha y formatearla
+           
+            // Agregar una nueva fila a la tabla
+            tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis});
+        }
+
+        // Asignar el modelo a la tabla
+        jTableUrlsAnalizadas.setModel(tableModel);
+
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+}
+    
+    
     
     /**
      * @param args the command line arguments
@@ -295,7 +425,11 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTableDominios;
+    private javax.swing.JTable jTableUrlsAnalizadas;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldURL;
     // End of variables declaration//GEN-END:variables

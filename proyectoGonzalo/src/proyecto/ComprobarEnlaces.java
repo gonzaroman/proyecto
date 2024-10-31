@@ -24,7 +24,7 @@ public class ComprobarEnlaces {
     String url;
     String dominio_y_protocolo;
     String idAnalisis;
-    String url_enlace, tipo, anchor_text, estado;
+    String url_enlace, tipo, anchor_text, estado, estadoResumen;
 
     public String getUrl() {
         return url;
@@ -93,8 +93,12 @@ public class ComprobarEnlaces {
             System.out.println("Enlaces internos relativos: " + relativeLinks);
             System.out.println("Enlaces apuntan a url rota: " + enlacesRotos);
             System.out.println("Enlaces apuntan url correcta: " + enlacesCorrectos);
+            
+            if(enlacesRotos>0){
+                estadoResumen = "Error";
+            }
 
-            InsertarEnlacesResumen.insertaEnlacesResumen(idAnalisis, internalLinks + "", externalLinks + "", enlacesRotos + "", estado);
+            InsertarEnlacesResumen.insertaEnlacesResumen(idAnalisis, internalLinks + "", externalLinks + "", enlacesRotos + "", estadoResumen);
 
         } catch (IOException iOException) {
 

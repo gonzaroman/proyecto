@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author 6003262
+ * @author Gonzalo Román Márquez
  */
 public class Consultas {
     public static Connection connect() {
