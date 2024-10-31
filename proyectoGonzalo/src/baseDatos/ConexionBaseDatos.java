@@ -42,7 +42,7 @@ public class ConexionBaseDatos {
                          protocolo TEXT,
                          dominio_y_protocolo TEXT,
                          fecha_analisis TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                         estado_general TEXT CHECK (estado_general IN ('Correcto', 'Error')) DEFAULT 'Correcto'
+                         estado TEXT CHECK (estado IN ('Correcto', 'Error')) DEFAULT 'Correcto'
                      );""";
            
                 
@@ -66,7 +66,7 @@ public class ConexionBaseDatos {
                          id_meta_title INTEGER PRIMARY KEY AUTOINCREMENT,
                          id_analisis INTEGER,
                          titulo_pagina TEXT,
-                         estado_titulo TEXT CHECK (estado_titulo IN ('Correcto', 'Error')) DEFAULT 'Correcto',
+                         estado TEXT CHECK (estado IN ('Correcto', 'Error')) DEFAULT 'Correcto',
                          FOREIGN KEY (id_analisis) REFERENCES Analisis(id_analisis)
                      );""";
                      
@@ -76,7 +76,7 @@ public class ConexionBaseDatos {
                          id_meta_description INTEGER PRIMARY KEY AUTOINCREMENT,
                          id_analisis INTEGER,
                          meta_descripcion TEXT,
-                         estado_descripcion TEXT CHECK (estado_descripcion IN ('Correcto', 'Error')) DEFAULT 'Correcto',
+                         estado TEXT CHECK (estado IN ('Correcto', 'Error')) DEFAULT 'Correcto',
                          FOREIGN KEY (id_analisis) REFERENCES Analisis(id_analisis)
                      );""";
                 
@@ -98,7 +98,7 @@ public class ConexionBaseDatos {
                          id_analisis INTEGER,
                          ruta_imagen TEXT,
                          alt_texto TEXT,
-                         estado_alt TEXT CHECK (estado_alt IN ('Correcto', 'Error')) DEFAULT 'Correcto',
+                         estado TEXT CHECK (estado IN ('Correcto', 'Error')) DEFAULT 'Correcto',
                          FOREIGN KEY (id_analisis) REFERENCES Analisis(id_analisis)
                      );""";
                 

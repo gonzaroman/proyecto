@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class InsertarMetaTitle {
     public static void insertaMetaTitleUrl(String id_analisis, String titulo_pagina, String estado_titulo) {
-        String sql = "INSERT INTO MetaTitle(id_analisis, titulo_pagina, estado_titulo) VALUES(?,?,?)";
+        String sql = "INSERT INTO MetaTitle(id_analisis, titulo_pagina, estado) VALUES(?,?,?)";
 
         try (Connection conn = ConexionBaseDatos.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

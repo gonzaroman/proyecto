@@ -15,7 +15,7 @@ import java.sql.ResultSet;
  */
 public class InsertarAnalisis {
     public static int insertaAnalisis(String url_principal, String dominio, String protocolo, String dominio_y_protocolo, String estado_general) {
-        String sql = "INSERT INTO analisis(url_principal, dominio, protocolo, dominio_y_protocolo, estado_general) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO analisis(url_principal, dominio, protocolo, dominio_y_protocolo, estado) VALUES(?,?,?,?,?)";
         
                 int idAnalisis = -1; // Valor inicial para el id_analisis
 

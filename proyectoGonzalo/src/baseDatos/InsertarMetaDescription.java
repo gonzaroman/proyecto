@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class InsertarMetaDescription {
     public static void insertaMetaDescription(String id_analisis, String meta_descripcion, String estado_descripcion) {
-        String sql = "INSERT INTO MetaDescription(id_analisis, meta_descripcion, estado_descripcion) VALUES(?,?,?)";
+        String sql = "INSERT INTO MetaDescription(id_analisis, meta_descripcion, estado) VALUES(?,?,?)";
 
         try (Connection conn = ConexionBaseDatos.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

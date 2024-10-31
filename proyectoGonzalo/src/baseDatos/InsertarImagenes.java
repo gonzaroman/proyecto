@@ -16,7 +16,7 @@ public class InsertarImagenes {
     // LO llamamos DIRECTAMENTE EN comprobarImagenes.java, en el paquete proyecto.
     //lo vamos guardando en la base de datos segun recorre las imagenes
     public static void insertaImagenes(String id_analisis, String ruta_imagen, String alt_texto, String estado_alt) {
-        String sql = "INSERT INTO Imagenes(id_analisis, ruta_imagen, alt_texto, estado_alt) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Imagenes(id_analisis, ruta_imagen, alt_texto, estado) VALUES(?,?,?,?)";
 
         try (Connection conn = ConexionBaseDatos.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

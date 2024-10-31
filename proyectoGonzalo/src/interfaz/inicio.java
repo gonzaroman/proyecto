@@ -4,6 +4,7 @@ package interfaz;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import baseDatos.ConexionBaseDatos;
 import java.net.MalformedURLException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -19,6 +20,8 @@ import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import proyecto.Ejecutar;
 import java.sql.Timestamp;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author Gonzalo Román Márquez
@@ -34,6 +37,10 @@ public class inicio extends javax.swing.JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowOpened(java.awt.event.WindowEvent evt) {
+            
+             ConexionBaseDatos.createNewTable();
+            
+            
             selectDominio(jListDominios);
             selectUrlsAnalizadas(jListUrlsAnalizadas);
             selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
@@ -151,8 +158,8 @@ public class inicio extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(319, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(55, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,8 +353,8 @@ public class inicio extends javax.swing.JFrame {
     }
     
     public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
-    String sql = "SELECT url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
-    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis"}, 0);
+    String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
+    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados","Imágenes","Enlaces"}, 0);
     
    SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -358,15 +365,25 @@ public class inicio extends javax.swing.JFrame {
 
         // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
         while (rs.next()) {
+             String id_analisis = rs.getString("id_analisis");
              String urlAnalizada = rs.getString("url_principal");
             
             // Obtener la fecha y formatearla
             Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
             String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
             // Obtener la fecha y formatearla
+            
+             // Obtener el conteo de errores de encabezados, imágenes y enlaces
+            int erroresEncabezados = obtenerConteoErrores(conn, "encabezados", id_analisis);
+            int erroresImagenes = obtenerConteoErrores(conn, "imagenes", id_analisis);
+            int erroresEnlaces = obtenerConteoErrores(conn, "enlaces", id_analisis);
+            int erroresTitle = obtenerConteoErrores(conn, "MetaTitle", id_analisis);
+            int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
+
+            
            
             // Agregar una nueva fila a la tabla
-            tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis});
+             tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
         }
 
         // Asignar el modelo a la tabla
@@ -375,6 +392,22 @@ public class inicio extends javax.swing.JFrame {
     } catch (SQLException e) {
         System.out.println(e.getMessage());
     }
+}
+    
+    
+    private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
+    String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
+    try (PreparedStatement pstmt = conn.prepareStatement(sqlErrores)) {
+        pstmt.setString(1, id_analisis);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("conteo");
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener errores de " + tabla + " para id_analisis: " + id_analisis);
+        System.out.println(e.getMessage());
+    }
+    return 0; // Devuelve 0 si ocurre un error
 }
     
     
