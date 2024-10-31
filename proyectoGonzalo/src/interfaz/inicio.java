@@ -22,6 +22,15 @@ import proyecto.Ejecutar;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 
+//TEMAS PARA LOOK AND FEEL
+
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+
 /**
  *
  * @author Gonzalo Román Márquez
@@ -67,6 +76,8 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableDominios = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,6 +172,20 @@ public class inicio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab2", jPanel3);
 
+        jButton1.setText("OSCURO");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("CLARO");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,6 +196,12 @@ public class inicio extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(218, 218, 218)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,7 +211,11 @@ public class inicio extends javax.swing.JFrame {
                         .addGap(524, 524, 524)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -227,6 +262,49 @@ public class inicio extends javax.swing.JFrame {
         worker.execute();
 
     }//GEN-LAST:event_jButtonAnalizarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+         try {
+            // Cambiar al tema oscuro de macOS
+            javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacDarkLaf());
+
+            // Actualizar la interfaz para aplicar el nuevo Look and Feel
+            javax.swing.SwingUtilities.updateComponentTreeUI(this);
+
+            // Opcional: redimensionar ventana si es necesario
+            this.pack();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         
+       
+    //        FlatMacLightLaf.install();   // Tema claro para macOS
+            
+             try {
+            // Cambiar al tema oscuro de macOS
+            javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacLightLaf());
+
+            // Actualizar la interfaz para aplicar el nuevo Look and Feel
+            javax.swing.SwingUtilities.updateComponentTreeUI(this);
+
+            // Opcional: redimensionar ventana si es necesario
+            this.pack();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void selectDominioTabla(JTable jTableDominios) {
 
@@ -317,27 +395,19 @@ public class inicio extends javax.swing.JFrame {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-       /* try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }*/
-        //</editor-fold>
+      */
         try {
-           javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
+         //   javax.swing.UIManager.getInstalledLookAndFeels();
+       //   javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
            // javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            // Selecciona uno de los temas comentados y descoméntalo para usarlo
+           // FlatLightLaf.install();         // Tema claro predeterminado de FlatLaf
+            // FlatDarkLaf.install();       // Tema oscuro predeterminado
+            // FlatIntelliJLaf.install();   // Similar a IntelliJ IDEA Light
+           //  FlatDarculaLaf.install();    // Similar a IntelliJ IDEA Darcula
+            FlatMacLightLaf.install();   // Tema claro para macOS
+            // FlatMacDarkLaf.install();    // Tema oscuro para macOS
+           
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -354,6 +424,8 @@ public class inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAnalizar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
