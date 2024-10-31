@@ -31,6 +31,7 @@ public class inicio extends javax.swing.JFrame {
         @Override
         public void windowOpened(java.awt.event.WindowEvent evt) {
             selectDominio(jListDominios);
+            selectUrlsAnalizadas(jListUrlsAnalizadas);
         }
     });
         
@@ -54,6 +55,8 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jListDominios = new javax.swing.JList<>();
         jButtonAnalizar = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jListUrlsAnalizadas = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -80,6 +83,13 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
+        jListUrlsAnalizadas.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(jListUrlsAnalizadas);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -92,6 +102,8 @@ public class inicio extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -102,8 +114,10 @@ public class inicio extends javax.swing.JFrame {
                     .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAnalizar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
@@ -176,6 +190,7 @@ public class inicio extends javax.swing.JFrame {
         protected void done() {
             // Ejecutado en el hilo de la GUI al completar doInBackground
             selectDominio(jListDominios); // Actualizar la lista una vez terminado
+            selectUrlsAnalizadas(jListUrlsAnalizadas);
         }
     };
 
@@ -203,6 +218,31 @@ public class inicio extends javax.swing.JFrame {
             }
             // Asignar el modelo al JList
             jListDominios.setModel(listModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void selectUrlsAnalizadas(JList<String> jListUrlsAnalizadas) {
+        String sql = "SELECT url_principal FROM Analisis order by fecha_analisis Desc";
+        DefaultListModel<String> listModel = new DefaultListModel<>(); // Modelo para el JList
+
+        try (Connection conn = Consultas.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de lista
+            while (rs.next()) {
+                String urlAnalizada = rs.getString("url_principal");
+                
+               
+                listModel.addElement(urlAnalizada); // Añadir la entrada al modelo
+                
+                System.out.println(urlAnalizada);
+            }
+            // Asignar el modelo al JList
+            jListUrlsAnalizadas.setModel(listModel);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -249,10 +289,12 @@ public class inicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnalizar;
     private javax.swing.JList<String> jListDominios;
+    private javax.swing.JList<String> jListUrlsAnalizadas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextFieldURL;
