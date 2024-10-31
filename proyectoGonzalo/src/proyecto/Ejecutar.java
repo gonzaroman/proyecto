@@ -11,6 +11,8 @@ import baseDatos.InsertarMetaDescription;
 import baseDatos.InsertarMetaTitle;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -119,7 +121,11 @@ public class Ejecutar {
        
         
          ComprobarEnlaces enlaces = new ComprobarEnlaces(url,dominio_y_protocolo,idAnalisis);
-         enlaces.comprobar();
+             try {
+                 enlaces.comprobar();
+             } catch (InterruptedException ex) {
+                 Logger.getLogger(Ejecutar.class.getName()).log(Level.SEVERE, null, ex);
+             }
          
          
           

@@ -81,68 +81,72 @@ public class Principal {
          
          
          if(estadoURL.comprobar()){
-             System.out.println(verde+"Conexión correcta: 200 ok");
-             
-             
-         //insertaAnalisis(String url_principal, String dominio, String protocolo, String dominio_y_protocolo, String estado_general)
-         
-         //aqui lo que hacemos en generar el analisis y guardamos en id_analsis el id que se ha generado, para poderlo utilizar como clave foranea en las demas consultas
-         //hemos recuperado el codigo en una consulta en insetar analisis y lo devolvemos con un return, ya que es necesario para las demas tablas
-         int id_analisis =  InsertarAnalisis.insertaAnalisis(url, dominio, protocolo, dominio_y_protocolo, "Correcto");
-         
-         //insertaEstadoUrl(String id_analisis, String estado_http, String mensaje_estado, String estado)
-        // InsertarEstadoUrl.insertaEstadoUrl(1,estadoURL.devolverCodigoEstado() , estadoURL.devolverMensaje(),estadoURL.devolverMensaje() );
-         
-        String idAnalisis = id_analisis+"";//convertimos el id del analisis en string para poderlo enviar en la consulta como clave foranea.
-        
-        
-        InsertarEstadoUrl.insertaEstadoUrl(idAnalisis,codigoEstado ,  estadoURL.devolverMensaje(),"Correcto");
-         
-        //Comprobar Meta Title
-        ComprobarTitle title = new ComprobarTitle(url);
-        title.comprobar();
-      //  title.getTitle();
-      //  title.getEstado_title();
-        
-        //insertar Datos Meta Title en BD
-        InsertarMetaTitle.insertaMetaTitleUrl(idAnalisis, title.getTitle(), title.getEstado_title());
-        
-        
-        //Comprobar Meta Description
-        ComprobarDescription description = new ComprobarDescription(url);
-        description.comprobar();
-        
-        //Insertar Meta Title en BD
-        
-        InsertarMetaDescription.insertaMetaDescription(idAnalisis, description.getDescription(), description.getEstadoDescription());
-        
-        
-        //Insertar Estructura de Hs en BD
-        //Creamos la comprobacion de encabezados y llamamos a clase InsertarEncabezados desde el metodo comprobar, puesto que los va recorriendo
-        ComprobarEncabezados encabezados = new ComprobarEncabezados(url,idAnalisis);
-        encabezados.comprobar();
-         
-       /*  
-         ComprobarEstructura EstructuraURL = new ComprobarEstructura(url);
-         EstructuraURL.comprobar();
-         */
-         
-         ComprobarImagenes imagenesURL = new ComprobarImagenes(url,idAnalisis);
-         imagenesURL.comprobar();
-       
-        
-         ComprobarEnlaces enlaces = new ComprobarEnlaces(url,dominio_y_protocolo,idAnalisis);
-         enlaces.comprobar();
-         
-         
-          
-         ComprobarTexto texto = new ComprobarTexto(url,idAnalisis);
-        texto.comprobar();
-        texto.calcularDensidad();
-          
-          
-           
-            //System.out.println(doc.html());
+             try {
+                 System.out.println(verde+"Conexión correcta: 200 ok");
+                 
+                 
+                 //insertaAnalisis(String url_principal, String dominio, String protocolo, String dominio_y_protocolo, String estado_general)
+                 
+                 //aqui lo que hacemos en generar el analisis y guardamos en id_analsis el id que se ha generado, para poderlo utilizar como clave foranea en las demas consultas
+                 //hemos recuperado el codigo en una consulta en insetar analisis y lo devolvemos con un return, ya que es necesario para las demas tablas
+                 int id_analisis =  InsertarAnalisis.insertaAnalisis(url, dominio, protocolo, dominio_y_protocolo, "Correcto");
+                 
+                 //insertaEstadoUrl(String id_analisis, String estado_http, String mensaje_estado, String estado)
+                 // InsertarEstadoUrl.insertaEstadoUrl(1,estadoURL.devolverCodigoEstado() , estadoURL.devolverMensaje(),estadoURL.devolverMensaje() );
+                 
+                 String idAnalisis = id_analisis+"";//convertimos el id del analisis en string para poderlo enviar en la consulta como clave foranea.
+                 
+                 
+                 InsertarEstadoUrl.insertaEstadoUrl(idAnalisis,codigoEstado ,  estadoURL.devolverMensaje(),"Correcto");
+                 
+                 //Comprobar Meta Title
+                 ComprobarTitle title = new ComprobarTitle(url);
+                 title.comprobar();
+                 //  title.getTitle();
+                 //  title.getEstado_title();
+                 
+                 //insertar Datos Meta Title en BD
+                 InsertarMetaTitle.insertaMetaTitleUrl(idAnalisis, title.getTitle(), title.getEstado_title());
+                 
+                 
+                 //Comprobar Meta Description
+                 ComprobarDescription description = new ComprobarDescription(url);
+                 description.comprobar();
+                 
+                 //Insertar Meta Title en BD
+                 
+                 InsertarMetaDescription.insertaMetaDescription(idAnalisis, description.getDescription(), description.getEstadoDescription());
+                 
+                 
+                 //Insertar Estructura de Hs en BD
+                 //Creamos la comprobacion de encabezados y llamamos a clase InsertarEncabezados desde el metodo comprobar, puesto que los va recorriendo
+                 ComprobarEncabezados encabezados = new ComprobarEncabezados(url,idAnalisis);
+                 encabezados.comprobar();
+                 
+                 /*
+                 ComprobarEstructura EstructuraURL = new ComprobarEstructura(url);
+                 EstructuraURL.comprobar();
+                 */
+                 
+                 ComprobarImagenes imagenesURL = new ComprobarImagenes(url,idAnalisis);
+                 imagenesURL.comprobar();
+                 
+                 
+                 ComprobarEnlaces enlaces = new ComprobarEnlaces(url,dominio_y_protocolo,idAnalisis);
+                 enlaces.comprobar();
+                 
+                 
+                 
+                 ComprobarTexto texto = new ComprobarTexto(url,idAnalisis);
+                 texto.comprobar();
+                 texto.calcularDensidad();
+                 
+                 
+                 
+                 //System.out.println(doc.html());
+             } catch (InterruptedException ex) {
+                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+             }
             
             
             
