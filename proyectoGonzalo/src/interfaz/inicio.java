@@ -33,22 +33,18 @@ public class inicio extends javax.swing.JFrame {
      */
     public inicio() {
         initComponents();
-       
+
         this.addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowOpened(java.awt.event.WindowEvent evt) {
-            
-             ConexionBaseDatos.createNewTable();
-            
-            
-            selectDominio(jListDominios);
-            selectUrlsAnalizadas(jListUrlsAnalizadas);
-            selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
-             selectDominioTabla(jTableDominios);
-        }
-    });
-        
-        
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+
+                ConexionBaseDatos.createNewTable();
+
+                selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+                selectDominioTabla(jTableDominios);
+            }
+        });
+
     }
 
     /**
@@ -65,11 +61,7 @@ public class inicio extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jTextFieldURL = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jListDominios = new javax.swing.JList<>();
         jButtonAnalizar = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jListUrlsAnalizadas = new javax.swing.JList<>();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableUrlsAnalizadas = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -87,29 +79,12 @@ public class inicio extends javax.swing.JFrame {
 
         jPanel1.setForeground(new java.awt.Color(255, 255, 204));
 
-        jListDominios.setBackground(new java.awt.Color(204, 255, 255));
-        jListDominios.setBorder(null);
-        jListDominios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jListDominios);
-
         jButtonAnalizar.setText("analizar");
         jButtonAnalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAnalizarActionPerformed(evt);
             }
         });
-
-        jListUrlsAnalizadas.setBorder(null);
-        jListUrlsAnalizadas.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane3.setViewportView(jListUrlsAnalizadas);
 
         jTableUrlsAnalizadas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -150,15 +125,9 @@ public class inicio extends javax.swing.JFrame {
                         .addComponent(jButtonAnalizar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(55, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -174,11 +143,7 @@ public class inicio extends javax.swing.JFrame {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5))
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
@@ -225,7 +190,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
-       /* String url = jTextFieldURL.getText();
+        /* String url = jTextFieldURL.getText();
         try {
             Ejecutar.hacer(url); //esto llama a la clase que ejecuta todos los procesos para recorrer la url y guardarlo en la base de datos
         } catch (MalformedURLException ex) {
@@ -233,74 +198,43 @@ public class inicio extends javax.swing.JFrame {
         }
         
         selectDominio(jListDominios);*/
-       
+
         String url = jTextFieldURL.getText();
 
-    // Crear un SwingWorker para ejecutar el análisis en segundo plano
-    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-        @Override
-        protected Void doInBackground() {
-            try {
-                Ejecutar.hacer(url); // Ejecuta el proceso en segundo plano
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+        // Crear un SwingWorker para ejecutar el análisis en segundo plano
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                try {
+                    Ejecutar.hacer(url); // Ejecuta el proceso en segundo plano
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
             }
-            return null;
-        }
-         @Override
-        protected void done() {
-            // Ejecutado en el hilo de la GUI al completar doInBackground
-            selectDominio(jListDominios); // Actualizar la lista una vez terminado
-            selectUrlsAnalizadas(jListUrlsAnalizadas);
-            selectDominioTabla(jTableDominios);
-            selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
-        }
-    };
 
-    // Ejecuta el SwingWorker
-    worker.execute();
-        
+            @Override
+            protected void done() {
+                // Ejecutado en el hilo de la GUI al completar doInBackground
+                // Actualizar la lista una vez terminado
+
+                selectDominioTabla(jTableDominios);
+                selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+            }
+        };
+
+        // Ejecuta el SwingWorker
+        worker.execute();
+
     }//GEN-LAST:event_jButtonAnalizarActionPerformed
 
-    public static void selectDominio(JList<String> jListDominios) {
-       // String sql = "SELECT dominio FROM Analisis group by dominio order by fecha_analisis Desc";
-        String sql = "SELECT dominio " +
-             "FROM Analisis " +
-             "WHERE fecha_analisis = (SELECT MAX(fecha_analisis) FROM Analisis AS a WHERE a.dominio = Analisis.dominio) " +
-             "GROUP BY dominio " +
-             "ORDER BY MAX(fecha_analisis) DESC";
-        
-        DefaultListModel<String> listModel = new DefaultListModel<>(); // Modelo para el JList
+    public static void selectDominioTabla(JTable jTableDominios) {
 
-        try (Connection conn = Consultas.connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha "
+                + "FROM Analisis "
+                + "GROUP BY dominio "
+                + "ORDER BY ultima_fecha DESC";
 
-            // Iterar sobre los resultados de la consulta y agregar al modelo de lista
-            while (rs.next()) {
-                String dominio = rs.getString("dominio");
-                
-               
-                listModel.addElement(dominio); // Añadir la entrada al modelo
-                
-                System.out.println(dominio);
-            }
-            // Asignar el modelo al JList
-            jListDominios.setModel(listModel);
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-     public static void selectDominioTabla(JTable jTableDominios) {
-
-               
-        String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha " +
-             "FROM Analisis " +
-             "GROUP BY dominio " +
-             "ORDER BY ultima_fecha DESC";
-        
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"DOMINIO", "CANTIDAD ANALISIS"}, 0);
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -311,7 +245,7 @@ public class inicio extends javax.swing.JFrame {
                 int cantidadAnalisis = rs.getInt("cantidad_analisis");
 
                 // Agregar una nueva fila a la tabla
-                tableModel.addRow(new Object[]{dominio,cantidadAnalisis});
+                tableModel.addRow(new Object[]{dominio, cantidadAnalisis});
             }
 
             // Asignar el modelo a la tabla
@@ -322,96 +256,59 @@ public class inicio extends javax.swing.JFrame {
         }
 
     }
-    
-    
-    
-    public static void selectUrlsAnalizadas(JList<String> jListUrlsAnalizadas) {
-        String sql = "SELECT url_principal, fecha_analisis FROM Analisis order by fecha_analisis Desc";
-        DefaultListModel<String> listModel = new DefaultListModel<>(); // Modelo para el JList
 
-        try (Connection conn = Consultas.connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+    public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
+        String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
-            // Iterar sobre los resultados de la consulta y agregar al modelo de lista
+        SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
             while (rs.next()) {
+                String id_analisis = rs.getString("id_analisis");
                 String urlAnalizada = rs.getString("url_principal");
-                String fechaAnalisis = rs.getString("fecha_analisis");
-                
-                
-               
-                listModel.addElement(urlAnalizada+fechaAnalisis); // Añadir la entrada al modelo
-                
-                System.out.println(urlAnalizada);
+
+                // Obtener la fecha y formatearla
+                Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
+                String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
+                // Obtener la fecha y formatearla
+
+                // Obtener el conteo de errores de encabezados, imágenes y enlaces
+                int erroresEncabezados = obtenerConteoErrores(conn, "encabezados", id_analisis);
+                int erroresImagenes = obtenerConteoErrores(conn, "imagenes", id_analisis);
+                int erroresEnlaces = obtenerConteoErrores(conn, "enlaces", id_analisis);
+                int erroresTitle = obtenerConteoErrores(conn, "MetaTitle", id_analisis);
+                int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
             }
-            // Asignar el modelo al JList
-            jListUrlsAnalizadas.setModel(listModel);
+
+            // Asignar el modelo a la tabla
+            jTableUrlsAnalizadas.setModel(tableModel);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
-    String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
-    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados","Imágenes","Enlaces"}, 0);
-    
-   SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-
-    try (Connection conn = Consultas.connect();
-         Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
-
-        // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
-        while (rs.next()) {
-             String id_analisis = rs.getString("id_analisis");
-             String urlAnalizada = rs.getString("url_principal");
-            
-            // Obtener la fecha y formatearla
-            Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
-            String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
-            // Obtener la fecha y formatearla
-            
-             // Obtener el conteo de errores de encabezados, imágenes y enlaces
-            int erroresEncabezados = obtenerConteoErrores(conn, "encabezados", id_analisis);
-            int erroresImagenes = obtenerConteoErrores(conn, "imagenes", id_analisis);
-            int erroresEnlaces = obtenerConteoErrores(conn, "enlaces", id_analisis);
-            int erroresTitle = obtenerConteoErrores(conn, "MetaTitle", id_analisis);
-            int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
-
-            
-           
-            // Agregar una nueva fila a la tabla
-             tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
-        }
-
-        // Asignar el modelo a la tabla
-        jTableUrlsAnalizadas.setModel(tableModel);
-
-    } catch (SQLException e) {
-        System.out.println(e.getMessage());
-    }
-}
-    
-    
     private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
-    String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
-    try (PreparedStatement pstmt = conn.prepareStatement(sqlErrores)) {
-        pstmt.setString(1, id_analisis);
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            return rs.getInt("conteo");
+        String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlErrores)) {
+            pstmt.setString(1, id_analisis);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("conteo");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener errores de " + tabla + " para id_analisis: " + id_analisis);
+            System.out.println(e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al obtener errores de " + tabla + " para id_analisis: " + id_analisis);
-        System.out.println(e.getMessage());
+        return 0; // Devuelve 0 si ocurre un error
     }
-    return 0; // Devuelve 0 si ocurre un error
-}
-    
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -421,7 +318,7 @@ public class inicio extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+       /* try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -436,14 +333,21 @@ public class inicio extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        }*/
         //</editor-fold>
+        try {
+           javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
+           // javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new inicio().setVisible(true);
-                
 
             }
         });
@@ -451,13 +355,9 @@ public class inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnalizar;
-    private javax.swing.JList<String> jListDominios;
-    private javax.swing.JList<String> jListUrlsAnalizadas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
