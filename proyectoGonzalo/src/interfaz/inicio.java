@@ -44,6 +44,16 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
         
+        
+    // Asigna un modelo vacío con encabezados personalizados desde el inicio
+    DefaultTableModel initialModel = new DefaultTableModel(
+        new String[]{"URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
+    );
+    jTableUrlsAnalizadas.setModel(initialModel);
+     jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
+     establecerAnchocolumnas();
+        
+        
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -55,6 +65,7 @@ public class inicio extends javax.swing.JFrame {
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
+                     establecerAnchocolumnas();
                 }
             }
         });
@@ -94,6 +105,14 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
         
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(700);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(100);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setPreferredWidth(100);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setPreferredWidth(100);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setPreferredWidth(100);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setPreferredWidth(100);
+        
         
        jTableDominios.getColumnModel().getColumn(0).setPreferredWidth(300);
        jTableDominios.getColumnModel().getColumn(1).setPreferredWidth(200);
@@ -108,6 +127,13 @@ public class inicio extends javax.swing.JFrame {
        jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
        jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
        jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+       
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
       
        jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         
@@ -137,12 +163,16 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         jTableUrlsAnalizadasSeleccionada = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jButtonTemaClaro = new javax.swing.JButton();
+        jButtonTemaOscuro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jPanel1.setForeground(new java.awt.Color(255, 255, 204));
@@ -201,18 +231,18 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(29, Short.MAX_VALUE))
+                        .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButtonAnalizar)
+                        .addGap(0, 676, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButtonAnalizar)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(29, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,46 +273,110 @@ public class inicio extends javax.swing.JFrame {
             .addGap(0, 567, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab2", jPanel3);
+        jTabbedPane1.addTab("META ETIQUETAS", jPanel3);
 
-        jButton1.setText("OSCURO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1274, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 567, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("ENCABEZADOS (Hs)", jPanel2);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1274, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 567, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("IMÁGENES", jPanel4);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1274, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 567, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("ENLACES", jPanel5);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1274, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 567, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("TEXTO", jPanel6);
+
+        jButtonTemaClaro.setText("CLARO");
+        jButtonTemaClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonTemaClaroActionPerformed(evt);
             }
         });
 
-        jButton2.setText("CLARO");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonTemaOscuro.setText("OSCURO");
+        jButtonTemaOscuro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonTemaOscuroActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonTemaOscuro)
+                    .addComponent(jButtonTemaClaro))
+                .addContainerGap(1162, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jButtonTemaClaro)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonTemaOscuro)
+                .addContainerGap(476, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("APARIENCIA", jPanel7);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(218, 218, 218)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(38, 38, 38)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
@@ -333,7 +427,7 @@ public class inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonAnalizarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonTemaOscuroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaOscuroActionPerformed
         // TODO add your handling code here:
         
          try {
@@ -350,9 +444,9 @@ public class inicio extends javax.swing.JFrame {
             e.printStackTrace();
         }
   
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonTemaOscuroActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonTemaClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaClaroActionPerformed
         // TODO add your handling code here:
          
        
@@ -372,7 +466,7 @@ public class inicio extends javax.swing.JFrame {
             e.printStackTrace();
         }
        
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonTemaClaroActionPerformed
 
 
     
@@ -474,6 +568,7 @@ public class inicio extends javax.swing.JFrame {
 
             // Asignar el modelo a la tabla
             jTableUrlsAnalizadasSeleccionada.setModel(tableModel);
+            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -539,11 +634,16 @@ public class inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAnalizar;
+    private javax.swing.JButton jButtonTemaClaro;
+    private javax.swing.JButton jButtonTemaOscuro;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
