@@ -30,6 +30,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -42,6 +43,21 @@ public class inicio extends javax.swing.JFrame {
      */
     public inicio() {
         initComponents();
+        
+        // Agregar MouseListener para capturar clic en jTableDominios
+        jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableDominios.getSelectedRow(); // Obtener la fila seleccionada
+
+                if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
+                    // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
+                    String dominio = jTableDominios.getValueAt(selectedRow, 0).toString();
+
+                    // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
+                    selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
+                }
+            }
+        });
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -51,10 +67,50 @@ public class inicio extends javax.swing.JFrame {
 
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 selectDominioTabla(jTableDominios);
+                
+                //  selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada,"www.snsmarketing.es");
+                
+                
+                establecerAnchocolumnas();
             }
         });
-
+        
+          
     }
+    
+    private void establecerAnchocolumnas() {
+        
+        //establecer ancho de las columnas
+        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(400);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(2).setPreferredWidth(100);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(3).setPreferredWidth(100);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(4).setPreferredWidth(100);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
+        
+        
+       jTableDominios.getColumnModel().getColumn(0).setPreferredWidth(300);
+       jTableDominios.getColumnModel().getColumn(1).setPreferredWidth(200);
+       
+       //alineacion de las columnas
+       DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+       rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
+       
+       jTableUrlsAnalizadas.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+       jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+       jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+      
+       jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        
+}
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,8 +121,6 @@ public class inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jTextFieldURL = new javax.swing.JTextField();
@@ -75,15 +129,13 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadas = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableDominios = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTableUrlsAnalizadasSeleccionada = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
 
         jTabbedPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -123,6 +175,19 @@ public class inicio extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(jTableDominios);
 
+        jTableUrlsAnalizadasSeleccionada.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(jTableUrlsAnalizadasSeleccionada);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -131,30 +196,33 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(jButtonAnalizar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(55, Short.MAX_VALUE))))
+                        .addContainerGap(29, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(jButtonAnalizar)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAnalizar))
-                        .addGap(28, 28, 28)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAnalizar))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(260, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         jTabbedPane1.addTab("tab1", jPanel1);
@@ -163,7 +231,7 @@ public class inicio extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1366, Short.MAX_VALUE)
+            .addGap(0, 1274, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,33 +259,27 @@ public class inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(218, 218, 218)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(218, 218, 218)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(524, 524, 524)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,6 +317,9 @@ public class inicio extends javax.swing.JFrame {
 
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+                
+              
+                
             }
         };
 
@@ -279,9 +344,7 @@ public class inicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        
-        
+  
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -306,6 +369,9 @@ public class inicio extends javax.swing.JFrame {
        
     }//GEN-LAST:event_jButton2ActionPerformed
 
+
+    
+    
     public static void selectDominioTabla(JTable jTableDominios) {
 
         String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha "
@@ -371,6 +437,45 @@ public class inicio extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
+    
+    public static void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
+        String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '"+dominio+"' ORDER BY fecha_analisis DESC ";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+
+        SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String id_analisis = rs.getString("id_analisis");
+                String urlAnalizada = rs.getString("url_principal");
+
+                // Obtener la fecha y formatearla
+                Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
+                String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
+                // Obtener la fecha y formatearla
+
+                // Obtener el conteo de errores de encabezados, imágenes y enlaces
+                int erroresEncabezados = obtenerConteoErrores(conn, "encabezados", id_analisis);
+                int erroresImagenes = obtenerConteoErrores(conn, "imagenes", id_analisis);
+                int erroresEnlaces = obtenerConteoErrores(conn, "enlaces", id_analisis);
+                int erroresTitle = obtenerConteoErrores(conn, "MetaTitle", id_analisis);
+                int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableUrlsAnalizadasSeleccionada.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
 
     private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
         String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
@@ -429,13 +534,13 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAnalizar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableDominios;
     private javax.swing.JTable jTableUrlsAnalizadas;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTable jTableUrlsAnalizadasSeleccionada;
     private javax.swing.JTextField jTextFieldURL;
     // End of variables declaration//GEN-END:variables
 }
