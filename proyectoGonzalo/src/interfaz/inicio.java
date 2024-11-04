@@ -62,6 +62,11 @@ public class inicio extends javax.swing.JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowOpened(java.awt.event.WindowEvent evt) {
+                
+                 // Aplica el tema y fuerza la actualización de la interfaz gráfica
+                javax.swing.SwingUtilities.updateComponentTreeUI(inicio.this);
+                inicio.this.pack(); // Opcional: reajustar el tamaño de la ventana
+
 
                 ConexionBaseDatos.createNewTable();
 
@@ -225,7 +230,7 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(28, 28, 28))
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jTabbedPane1.addTab("GENERAL", jPanel1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -354,7 +359,7 @@ public class inicio extends javax.swing.JFrame {
     //        FlatMacLightLaf.install();   // Tema claro para macOS
             
              try {
-            // Cambiar al tema oscuro de macOS
+            // Cambiar al tema CLARO de macOS
             javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacLightLaf());
 
             // Actualizar la interfaz para aplicar el nuevo Look and Feel
@@ -512,6 +517,11 @@ public class inicio extends javax.swing.JFrame {
            //  FlatDarculaLaf.install();    // Similar a IntelliJ IDEA Darcula
             FlatMacLightLaf.install();   // Tema claro para macOS
             // FlatMacDarkLaf.install();    // Tema oscuro para macOS
+            
+          
+
+        
+            
            
             
         } catch (Exception e) {
