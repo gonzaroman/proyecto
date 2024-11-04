@@ -29,6 +29,12 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -51,9 +57,10 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadas.setModel(initialModel);
         jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
         establecerAnchocolumnas();
-
+        
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableDominios.getSelectedRow(); // Obtener la fila seleccionada
 
@@ -66,6 +73,8 @@ public class inicio extends javax.swing.JFrame {
                     establecerAnchocolumnas();
 
                     jLabelUrlSeleccionada.setText(dominio);
+                    
+                    ocultarIdAnalisis();
                 }
 
             }
@@ -73,6 +82,7 @@ public class inicio extends javax.swing.JFrame {
 
         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
         jTableUrlsAnalizadas.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableUrlsAnalizadas.getSelectedRow(); // Obtener la fila seleccionada
 
@@ -92,6 +102,7 @@ public class inicio extends javax.swing.JFrame {
 
         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
         jTableUrlsAnalizadasSeleccionada.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableUrlsAnalizadasSeleccionada.getSelectedRow(); // Obtener la fila seleccionada
 
@@ -111,6 +122,45 @@ public class inicio extends javax.swing.JFrame {
 
             }
         });
+        
+        
+       jTableImagenes.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        int selectedRow = jTableImagenes.getSelectedRow(); // Obtener la fila seleccionada
+
+        if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
+            String urlImagen = jTableImagenes.getValueAt(selectedRow, 0).toString();
+             // Limpiar cualquier texto o imagen previa en jLabelImagen
+            jLabelImagen.setIcon(null);
+            jLabelImagen.setText("");
+            try {
+                // Crear conexión con el User-Agent especificado
+                URL url = new URL(urlImagen);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36");
+
+                // Leer la imagen desde la conexión
+                Image image = ImageIO.read(connection.getInputStream());
+                
+                if (image != null) {
+
+                // Escalar la imagen para ajustarla al JLabel
+                Image scaledImage = image.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                jLabelImagen.setIcon(new ImageIcon(scaledImage));
+                }else{
+                    System.out.println("La imagen no se puede cargar");
+                    jLabelImagen.setText("no se puede cargar");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("No se pudo cargar la imagen desde la URL proporcionada.");
+            }
+        }
+    }
+});
+
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -127,8 +177,21 @@ public class inicio extends javax.swing.JFrame {
 
                 //  selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada,"www.snsmarketing.es");
                 establecerAnchocolumnas();
+                 ocultarIdAnalisis(); // Ocultar ID
             }
         });
+
+    }
+    
+    private void ocultarIdAnalisis() {
+        // Suponiendo que el ID está en la primera columna (índice 0)
+        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);
 
     }
 
@@ -142,23 +205,25 @@ public class inicio extends javax.swing.JFrame {
         selectImagenesTabla(jTableImagenes, idAnalisis);
         selectEnlacesTabla(jTableEnlaces, idAnalisis);
         selectTextoTabla(jTableTexto, idAnalisis);
+        
+        ocultarIdAnalisis();
 
     }
 
     private void establecerAnchocolumnas() {
 
         //establecer ancho de las columnas
-        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(400);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(150);
+      
+        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(400);
         jTableUrlsAnalizadas.getColumnModel().getColumn(2).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(3).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(4).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
 
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(700);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(150);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(100);
+       
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(700);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(150);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setPreferredWidth(100);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setPreferredWidth(100);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setPreferredWidth(100);
@@ -171,19 +236,21 @@ public class inicio extends javax.swing.JFrame {
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
 
-        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        
         jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+       
 
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+       
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+       
 
         jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
 
@@ -221,6 +288,7 @@ public class inicio extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTableImagenes = new javax.swing.JTable();
+        jLabelImagen = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTableEnlaces = new javax.swing.JTable();
@@ -437,13 +505,20 @@ public class inicio extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1062, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(jLabelImagen)
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(109, 109, 109)
+                        .addComponent(jLabelImagen)))
                 .addContainerGap(109, Short.MAX_VALUE))
         );
 
@@ -1006,6 +1081,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JButton jButtonTemaOscuro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelImagen;
     private javax.swing.JLabel jLabelUrlSeleccionada;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

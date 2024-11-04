@@ -61,6 +61,13 @@ public class ComprobarImagenes {
                 ruta_imagen = img.absUrl("src");
                 alt_texto = img.attr("alt");
                // String titleText = img.attr("title");
+               
+                // Filtrar imágenes en formato Base64
+            if (ruta_imagen.startsWith("data:image/")) {
+                System.out.println("Imagen en Base64 ignorada: " + ruta_imagen);
+                continue; // Saltar esta iteración si es una imagen en Base64
+            }
+               
                 System.out.println("ruta: " + ruta_imagen);
                 System.out.println("Imagen: alt=\"" + alt_texto + "\"");
                 
