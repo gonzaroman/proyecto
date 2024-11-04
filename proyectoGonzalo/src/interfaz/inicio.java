@@ -23,7 +23,6 @@ import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 
 //TEMAS PARA LOOK AND FEEL
-
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -44,22 +43,19 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
         aplicarTemaClaro();
-        
-    // Asigna un modelo vacío con encabezados personalizados desde el inicio
-    DefaultTableModel initialModel = new DefaultTableModel(
-        new String[]{"URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
-    );
-    jTableUrlsAnalizadas.setModel(initialModel);
-    jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
-     establecerAnchocolumnas();
-        
-        
+
+        // Asigna un modelo vacío con encabezados personalizados desde el inicio
+        DefaultTableModel initialModel = new DefaultTableModel(
+                new String[]{"URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
+        );
+        jTableUrlsAnalizadas.setModel(initialModel);
+        jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
+        establecerAnchocolumnas();
+
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableDominios.getSelectedRow(); // Obtener la fila seleccionada
-                
-                          
 
                 if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
@@ -67,106 +63,90 @@ public class inicio extends javax.swing.JFrame {
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
-                     establecerAnchocolumnas();
-                     
-                     jLabelUrlSeleccionada.setText(dominio);
+                    establecerAnchocolumnas();
+
+                    jLabelUrlSeleccionada.setText(dominio);
                 }
-                
-                
-                
+
             }
         });
-        
-        
-         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
+
+        // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
         jTableUrlsAnalizadas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableUrlsAnalizadas.getSelectedRow(); // Obtener la fila seleccionada
-                
+
                 if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String dominio = jTableUrlsAnalizadas.getValueAt(selectedRow, 1).toString();
-                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
+                    String idAnalisis = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     jLabelUrlSeleccionada.setText(dominio);
-                    
-                     rellenaLabels(idAnalisis);
+
+                    rellenaLabels(idAnalisis);
                 }
-                
-                
-                
+
             }
         });
-        
-        
-         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
+
+        // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
         jTableUrlsAnalizadasSeleccionada.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableUrlsAnalizadasSeleccionada.getSelectedRow(); // Obtener la fila seleccionada
-                
+
                 if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String urlSeleccionada = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
 
-
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
-                   
-                     jLabelUrlSeleccionada.setText(urlSeleccionada);
-                     
-                     /*selectMetaTitleTabla(jTableTitle,idAnalisis);
+                    jLabelUrlSeleccionada.setText(urlSeleccionada);
+
+                    /*selectMetaTitleTabla(jTableTitle,idAnalisis);
                      selectMetaDescriptionTabla(jTableDescription,idAnalisis);*/
-                     
-                     rellenaLabels(idAnalisis);
-                     
+                    rellenaLabels(idAnalisis);
+
                 }
-                
-                
-                
+
             }
         });
-        
-        
-        
-        
-        
-        
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                
-                 // Aplica el tema y fuerza la actualización de la interfaz gráfica
+
+                // Aplica el tema y fuerza la actualización de la interfaz gráfica
                 javax.swing.SwingUtilities.updateComponentTreeUI(inicio.this);
                 inicio.this.pack(); // Opcional: reajustar el tamaño de la ventana
-
 
                 ConexionBaseDatos.createNewTable();
 
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 selectDominioTabla(jTableDominios);
-                
+
                 //  selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada,"www.snsmarketing.es");
-                
-                
                 establecerAnchocolumnas();
             }
         });
-        
-          
+
     }
-    
-    private void rellenaLabels(String idAnalisis){
-    
-        selectMetaTitleTabla(jTableTitle,idAnalisis);
-        selectMetaDescriptionTabla(jTableDescription,idAnalisis);selectMetaTitleTabla(jTableTitle,idAnalisis);
-        selectMetaDescriptionTabla(jTableDescription,idAnalisis);
-    
+
+    private void rellenaLabels(String idAnalisis) {
+
+        selectMetaTitleTabla(jTableTitle, idAnalisis);
+        selectMetaDescriptionTabla(jTableDescription, idAnalisis);
+        selectMetaTitleTabla(jTableTitle, idAnalisis);
+        selectMetaDescriptionTabla(jTableDescription, idAnalisis);
+        selectEncabezadosTabla(jTableEncabezados, idAnalisis);
+        selectImagenesTabla(jTableImagenes, idAnalisis);
+        selectEnlacesTabla(jTableEnlaces, idAnalisis);
+        selectTextoTabla(jTableTexto, idAnalisis);
+
     }
-    
+
     private void establecerAnchocolumnas() {
-        
+
         //establecer ancho de las columnas
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(400);
         jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -175,7 +155,7 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadas.getColumnModel().getColumn(4).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
-        
+
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(700);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -183,33 +163,33 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setPreferredWidth(100);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setPreferredWidth(100);
-        
-        
-       jTableDominios.getColumnModel().getColumn(0).setPreferredWidth(300);
-       jTableDominios.getColumnModel().getColumn(1).setPreferredWidth(200);
-       
-       //alineacion de las columnas
-       DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-       rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
-       
-       jTableUrlsAnalizadas.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-       jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
-       jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-       
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-       jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-      
-       jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-        
-}
-        /**
+
+        jTableDominios.getColumnModel().getColumn(0).setPreferredWidth(300);
+        jTableDominios.getColumnModel().getColumn(1).setPreferredWidth(200);
+
+        //alineacion de las columnas
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
+
+        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+
+        jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
+
+    }
+
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -236,10 +216,20 @@ public class inicio extends javax.swing.JFrame {
         jTableDescription = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableEncabezados = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTableImagenes = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTableEnlaces = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTableTexto = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTableResumen = new javax.swing.JTable();
         jButtonTemaClaro = new javax.swing.JButton();
         jButtonTemaOscuro = new javax.swing.JButton();
         jLabelUrlSeleccionada = new javax.swing.JLabel();
@@ -395,70 +385,165 @@ public class inicio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("META ETIQUETAS", jPanel3);
 
+        jTableEncabezados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTableEncabezados);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(281, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("ENCABEZADOS (Hs)", jPanel2);
+
+        jTableImagenes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane7.setViewportView(jTableImagenes);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1062, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(206, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("IMÁGENES", jPanel4);
+
+        jTableEnlaces.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTableEnlaces);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 1042, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(226, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(112, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("ENLACES", jPanel5);
+
+        jTableTexto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(jTableTexto);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(796, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("TEXTO", jPanel6);
+
+        jTableResumen.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane10.setViewportView(jTableResumen);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(764, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("APARIENCIA", jPanel7);
+        jTabbedPane1.addTab("RESUMEN", jPanel7);
 
         jButtonTemaClaro.setText("CLARO");
         jButtonTemaClaro.addActionListener(new java.awt.event.ActionListener() {
@@ -481,18 +566,17 @@ public class inicio extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(247, 247, 247)
-                        .addComponent(jLabelUrlSeleccionada)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonTemaClaro)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonTemaOscuro)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addGap(247, 247, 247)
+                .addComponent(jLabelUrlSeleccionada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonTemaClaro)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonTemaOscuro)
+                .addGap(48, 48, 48))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,9 +626,7 @@ public class inicio extends javax.swing.JFrame {
 
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
-                
-              
-                
+
             }
         };
 
@@ -555,8 +637,8 @@ public class inicio extends javax.swing.JFrame {
 
     private void jButtonTemaOscuroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaOscuroActionPerformed
         // TODO add your handling code here:
-        
-         try {
+
+        try {
             // Cambiar al tema oscuro de macOS
             javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacDarkLaf());
 
@@ -569,11 +651,11 @@ public class inicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-  
+
     }//GEN-LAST:event_jButtonTemaOscuroActionPerformed
 
-    public void aplicarTemaClaro(){
-         try {
+    public void aplicarTemaClaro() {
+        try {
             // Cambiar al tema CLARO de macOS
             javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacLightLaf());
 
@@ -586,20 +668,17 @@ public class inicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
     }
-    
-    
+
+
     private void jButtonTemaClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaClaroActionPerformed
         // TODO add your handling code here:
-           aplicarTemaClaro();
-            
-       
+        aplicarTemaClaro();
+
+
     }//GEN-LAST:event_jButtonTemaClaroActionPerformed
 
-
-    
-    
     public static void selectDominioTabla(JTable jTableDominios) {
 
         String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha "
@@ -631,7 +710,7 @@ public class inicio extends javax.swing.JFrame {
 
     public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
         String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID","URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -655,7 +734,7 @@ public class inicio extends javax.swing.JFrame {
                 int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
 
                 // Agregar una nueva fila a la tabla
-                tableModel.addRow(new Object[]{id_analisis,urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+                tableModel.addRow(new Object[]{id_analisis, urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
             }
 
             // Asignar el modelo a la tabla
@@ -665,10 +744,10 @@ public class inicio extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public static void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
-        String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '"+dominio+"' ORDER BY fecha_analisis DESC ";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID","URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+        String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '" + dominio + "' ORDER BY fecha_analisis DESC ";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -692,18 +771,17 @@ public class inicio extends javax.swing.JFrame {
                 int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
 
                 // Agregar una nueva fila a la tabla
-                tableModel.addRow(new Object[]{id_analisis,urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+                tableModel.addRow(new Object[]{id_analisis, urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
             }
 
             // Asignar el modelo a la tabla
             jTableUrlsAnalizadasSeleccionada.setModel(tableModel);
-            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public static void selectMetaTitleTabla(JTable jTableTitle, String idAnalisis) {
 
         String sql = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "'";
@@ -730,8 +808,8 @@ public class inicio extends javax.swing.JFrame {
         }
 
     }
-    
-       public static void selectMetaDescriptionTabla(JTable jTableDescription, String idAnalisis) {
+
+    public static void selectMetaDescriptionTabla(JTable jTableDescription, String idAnalisis) {
 
         String sql = "SELECT meta_descripcion, estado From MetaDescription where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
@@ -757,8 +835,120 @@ public class inicio extends javax.swing.JFrame {
         }
 
     }
-            
+
+    public static void selectEncabezadosTabla(JTable jTableEncabezados, String idAnalisis) {
+
+        String sql = "SELECT nivel,contenido, estado From Encabezados where id_analisis ='" + idAnalisis + "'";
+        System.out.println(sql);
+
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"NIVEL", "CONTENIDO", "ESTADO"}, 0);
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String nivel = rs.getString("nivel");
+                String contenido = rs.getString("contenido");
+                String estado = rs.getString("estado");
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{nivel, contenido, estado});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableEncabezados.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
     
+    public static void selectImagenesTabla(JTable jTableImagenes, String idAnalisis) {
+
+        String sql = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "'";
+        System.out.println(sql);
+
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"RUTA IMAGEN", "ALT", "ESTADO"}, 0);
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String ruta_imagen = rs.getString("ruta_imagen");
+                String alt_texto = rs.getString("alt_texto");
+                String estado = rs.getString("estado");
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{ruta_imagen, alt_texto, estado});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableImagenes.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
+    public static void selectEnlacesTabla(JTable jTableEnlaces, String idAnalisis) {
+
+        String sql = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "'";
+        System.out.println(sql);
+
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO","ANCHOR TEXT", "ESTADO"}, 0);
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String url_enlace = rs.getString("url_enlace");
+                String tipo = rs.getString("tipo");
+                String achor_text = rs.getString("anchor_text");
+                String estado = rs.getString("estado");
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{url_enlace, tipo, achor_text, estado});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableEnlaces.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
+    public static void selectTextoTabla(JTable jTableTexto, String idAnalisis) {
+
+        String sql = "SELECT palabra,frecuencia,densidad From Texto where id_analisis ='" + idAnalisis + "'";
+        System.out.println(sql);
+
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES","DENSIDAD(%)"}, 0);
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String palabra = rs.getString("palabra");
+                String frecuencia = rs.getString("frecuencia");
+                String densidad = rs.getString("densidad");
+                
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{palabra, frecuencia, densidad});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableTexto.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
     private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
         String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
@@ -783,25 +973,19 @@ public class inicio extends javax.swing.JFrame {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-      */
+         */
         try {
-         //   javax.swing.UIManager.getInstalledLookAndFeels();
-       //   javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
-           // javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            //   javax.swing.UIManager.getInstalledLookAndFeels();
+            //   javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
+            // javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
             // Selecciona uno de los temas comentados y descoméntalo para usarlo
-           // FlatLightLaf.install();         // Tema claro predeterminado de FlatLaf
+            // FlatLightLaf.install();         // Tema claro predeterminado de FlatLaf
             // FlatDarkLaf.install();       // Tema oscuro predeterminado
             // FlatIntelliJLaf.install();   // Similar a IntelliJ IDEA Light
-           //  FlatDarculaLaf.install();    // Similar a IntelliJ IDEA Darcula
+            //  FlatDarculaLaf.install();    // Similar a IntelliJ IDEA Darcula
             FlatMacLightLaf.install();   // Tema claro para macOS
             // FlatMacDarkLaf.install();    // Tema oscuro para macOS
-            
-          
 
-        
-            
-           
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -831,13 +1015,23 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableDescription;
     private javax.swing.JTable jTableDominios;
+    private javax.swing.JTable jTableEncabezados;
+    private javax.swing.JTable jTableEnlaces;
+    private javax.swing.JTable jTableImagenes;
+    private javax.swing.JTable jTableResumen;
+    private javax.swing.JTable jTableTexto;
     private javax.swing.JTable jTableTitle;
     private javax.swing.JTable jTableUrlsAnalizadas;
     private javax.swing.JTable jTableUrlsAnalizadasSeleccionada;

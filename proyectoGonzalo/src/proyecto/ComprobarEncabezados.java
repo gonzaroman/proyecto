@@ -70,6 +70,7 @@ public class ComprobarEncabezados {
                     }else{
                         System.out.println("Correcto");
                         contenido = h1.text();
+                        estado = "Correcto";
                     }
                     System.out.println("-->" + h1.text());
                     currentH1 = h1.text();
