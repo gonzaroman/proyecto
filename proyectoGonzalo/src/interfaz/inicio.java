@@ -43,7 +43,7 @@ public class inicio extends javax.swing.JFrame {
      */
     public inicio() {
         initComponents();
-        
+        aplicarTemaClaro();
         
     // Asigna un modelo vacío con encabezados personalizados desde el inicio
     DefaultTableModel initialModel = new DefaultTableModel(
@@ -58,6 +58,9 @@ public class inicio extends javax.swing.JFrame {
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = jTableDominios.getSelectedRow(); // Obtener la fila seleccionada
+                
+                              
+                            
 
                 if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
@@ -66,9 +69,62 @@ public class inicio extends javax.swing.JFrame {
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
                      establecerAnchocolumnas();
+                     
+                     jLabelUrlSeleccionada.setText(dominio);
                 }
+                
+                
+                
             }
         });
+        
+        
+         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
+        jTableUrlsAnalizadas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableUrlsAnalizadas.getSelectedRow(); // Obtener la fila seleccionada
+                
+                if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
+                    // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
+                    String dominio = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
+
+                    // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
+                   
+                     
+                     jLabelUrlSeleccionada.setText(dominio);
+                }
+                
+                
+                
+            }
+        });
+        
+        
+         // Agregar MouseListener para capturar clic en jTableUrlsAnalizadas
+        jTableUrlsAnalizadasSeleccionada.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableUrlsAnalizadasSeleccionada.getSelectedRow(); // Obtener la fila seleccionada
+                
+                if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
+                    // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
+                    String dominio = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
+
+                    // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
+                   
+                     
+                     jLabelUrlSeleccionada.setText(dominio);
+                }
+                
+                
+                
+            }
+        });
+        
+        
+        
+        
+        
+        
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -163,6 +219,12 @@ public class inicio extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         jTableUrlsAnalizadasSeleccionada = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -170,6 +232,7 @@ public class inicio extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jButtonTemaClaro = new javax.swing.JButton();
         jButtonTemaOscuro = new javax.swing.JButton();
+        jLabelUrlSeleccionada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -262,15 +325,62 @@ public class inicio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("GENERAL", jPanel1);
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel1.setText("TITLE");
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel2.setText("META DESCRIPTION");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1274, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 567, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("META ETIQUETAS", jPanel3);
@@ -327,6 +437,19 @@ public class inicio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("TEXTO", jPanel6);
 
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1274, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 567, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("APARIENCIA", jPanel7);
+
         jButtonTemaClaro.setText("CLARO");
         jButtonTemaClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,42 +464,35 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonTemaOscuro)
-                    .addComponent(jButtonTemaClaro))
-                .addContainerGap(1162, Short.MAX_VALUE))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jButtonTemaClaro)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonTemaOscuro)
-                .addContainerGap(476, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("APARIENCIA", jPanel7);
+        jLabelUrlSeleccionada.setText("jLabel3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(247, 247, 247)
+                        .addComponent(jLabelUrlSeleccionada)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonTemaClaro)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonTemaOscuro)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonTemaClaro)
+                    .addComponent(jButtonTemaOscuro)
+                    .addComponent(jLabelUrlSeleccionada))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
@@ -446,13 +562,8 @@ public class inicio extends javax.swing.JFrame {
   
     }//GEN-LAST:event_jButtonTemaOscuroActionPerformed
 
-    private void jButtonTemaClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaClaroActionPerformed
-        // TODO add your handling code here:
-         
-       
-    //        FlatMacLightLaf.install();   // Tema claro para macOS
-            
-             try {
+    public void aplicarTemaClaro(){
+         try {
             // Cambiar al tema CLARO de macOS
             javax.swing.UIManager.setLookAndFeel(new com.formdev.flatlaf.themes.FlatMacLightLaf());
 
@@ -465,6 +576,14 @@ public class inicio extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    
+    }
+    
+    
+    private void jButtonTemaClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTemaClaroActionPerformed
+        // TODO add your handling code here:
+           aplicarTemaClaro();
+            
        
     }//GEN-LAST:event_jButtonTemaClaroActionPerformed
 
@@ -539,7 +658,7 @@ public class inicio extends javax.swing.JFrame {
     
     public static void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '"+dominio+"' ORDER BY fecha_analisis DESC ";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID","URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -563,7 +682,7 @@ public class inicio extends javax.swing.JFrame {
                 int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
 
                 // Agregar una nueva fila a la tabla
-                tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+                tableModel.addRow(new Object[]{id_analisis,urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
             }
 
             // Asignar el modelo a la tabla
@@ -637,6 +756,9 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAnalizar;
     private javax.swing.JButton jButtonTemaClaro;
     private javax.swing.JButton jButtonTemaOscuro;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelUrlSeleccionada;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -644,10 +766,14 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTableDominios;
     private javax.swing.JTable jTableUrlsAnalizadas;
     private javax.swing.JTable jTableUrlsAnalizadasSeleccionada;
