@@ -49,7 +49,7 @@ public class ComprobarImagenes {
     
     
     public void comprobar(){
-        // 5. Imágenes con el atributo "alt" o "title"
+        //  Imágenes con el atributo "alt" o "title"
         // Descargar y analizar el HTML de la página web
             try {
             Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
@@ -63,7 +63,7 @@ public class ComprobarImagenes {
                // String titleText = img.attr("title");
                
                 // Filtrar imágenes en formato Base64
-            if (ruta_imagen.startsWith("data:image/")) {
+            if (ruta_imagen.startsWith("data:image/") || ruta_imagen.isEmpty()) {
                 System.out.println("Imagen en Base64 ignorada: " + ruta_imagen);
                 continue; // Saltar esta iteración si es una imagen en Base64
             }

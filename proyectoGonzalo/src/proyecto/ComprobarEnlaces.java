@@ -24,7 +24,8 @@ public class ComprobarEnlaces {
     String url;
     String dominio_y_protocolo;
     String idAnalisis;
-    String url_enlace, tipo, anchor_text, estado, estadoResumen;
+    String url_enlace, tipo, anchor_text, estadoResumen;
+    String estado = "Correcto";
 
     public String getUrl() {
         return url;
@@ -108,6 +109,25 @@ public class ComprobarEnlaces {
     }
 
     private void verificarEnlace(String href, Element link) throws IOException {
+       
+        if (href.isEmpty()) {
+            System.out.println("Enlace vacío ignorado.");
+            return;
+        }
+    
+         // Ajustar enlace raíz para que sea una URL completa si es "/"
+    if ("/".equals(href)) {
+        href = dominio_y_protocolo + href; // Construir URL completa para la raíz
+        internalLinks++;
+            System.out.println("INTERNO:");
+            tipo = "INTERNO";
+            System.out.println(href);
+            url_enlace = href;
+            System.out.println("Anchor text: " + link.text());
+            anchor_text = link.text();
+            estado = compruebaRoto(href);
+    }
+        
         if (href.startsWith(dominio_y_protocolo) && !href.startsWith("#")) {
             internalLinks++;
             System.out.println("INTERNO:");
