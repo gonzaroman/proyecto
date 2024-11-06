@@ -233,6 +233,9 @@ public class inicio extends javax.swing.JFrame {
         selectImagenesTabla(jTableImagenes, idAnalisis);
         selectEnlacesTabla(jTableEnlaces, idAnalisis);
         selectTextoTabla(jTableTexto, idAnalisis);
+        selectResumenTabla(jTableResumen, idAnalisis);
+        
+        selectListadoResumenErroresTabla(jTableResumenErrores, idAnalisis);
         
         ocultarIdAnalisis();
         
@@ -330,6 +333,9 @@ public class inicio extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
         jTableResumen = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTableResumenErrores = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
         jButtonTemaClaro = new javax.swing.JButton();
         jButtonTemaOscuro = new javax.swing.JButton();
         jLabelUrlSeleccionada = new javax.swing.JLabel();
@@ -654,21 +660,43 @@ public class inicio extends javax.swing.JFrame {
         ));
         jScrollPane10.setViewportView(jTableResumen);
 
+        jTableResumenErrores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane11.setViewportView(jTableResumenErrores);
+
+        jLabel6.setText("Listado de Errores");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(58, 58, 58)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(764, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56))
         );
 
         jTabbedPane1.addTab("RESUMEN", jPanel7);
@@ -724,14 +752,7 @@ public class inicio extends javax.swing.JFrame {
 
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
-        /* String url = jTextFieldURL.getText();
-        try {
-            Ejecutar.hacer(url); //esto llama a la clase que ejecuta todos los procesos para recorrer la url y guardarlo en la base de datos
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        selectDominio(jListDominios);*/
+      
 
         String url = jTextFieldURL.getText();
 
@@ -1077,6 +1098,97 @@ public class inicio extends javax.swing.JFrame {
         }
 
     }
+    
+    public static void selectResumenTabla(JTable jTableResumen, String idAnalisis) {
+
+       String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{ "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+
+        SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String id_analisis = rs.getString("id_analisis");
+                String urlAnalizada = rs.getString("url_principal");
+
+                // Obtener la fecha y formatearla
+                Timestamp fechaAnalisisTimestamp = rs.getTimestamp("fecha_analisis");
+                String fechaAnalisis = cambiaFormatoFecha.format(fechaAnalisisTimestamp);
+                // Obtener la fecha y formatearla
+
+                // Obtener el conteo de errores de encabezados, imágenes y enlaces
+                int erroresEncabezados = obtenerConteoErrores(conn, "encabezados", id_analisis);
+                int erroresImagenes = obtenerConteoErrores(conn, "imagenes", id_analisis);
+                int erroresEnlaces = obtenerConteoErrores(conn, "enlaces", id_analisis);
+                int erroresTitle = obtenerConteoErrores(conn, "MetaTitle", id_analisis);
+                int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
+
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{ urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+            }
+
+            // Asignar el modelo a la tabla
+            jTableResumen.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    
+    public static void selectListadoResumenErroresTabla(JTable jTableResumenErrores, String idAnalisis) {
+
+      /*  String sqlTitle = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        String sqlDescription = "SELECT meta_descripcion, estado From MetaDescription where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        String sqlEncabezados = "SELECT nivel,contenido, estado From Encabezados where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        String sqlImagenes = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        String sqlEnlaces = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        System.out.println(sqlTitle); */
+
+        String sql = "SELECT 'MetaTitle' AS origen, titulo_pagina AS detalle, 'Meta Title Vacio' AS estado " +
+                 "FROM MetaTitle " +
+                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
+                 "UNION ALL " +
+                 "SELECT 'MetaDescription' AS origen, meta_descripcion AS detalle, 'Meta Description Vacía' AS estado " +
+                 "FROM MetaDescription " +
+                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
+                 "UNION ALL " +
+                 "SELECT nivel AS origen, contenido AS detalle, estado " +
+                 "FROM Encabezados " +
+                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
+                 "UNION ALL " +
+                 "SELECT 'Imagenes' AS origen, ruta_imagen AS detalle, 'no tiene Alt' AS estado " +
+                 "FROM Imagenes " +
+                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
+                 "UNION ALL " +
+                 "SELECT 'Enlaces' AS origen, url_enlace AS detalle, 'Enlace Roto' AS estado  " +
+                 "FROM Enlaces " +
+                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
+
+    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0);
+
+    try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+        while (rs.next()) {
+            String origen = rs.getString("origen");
+            String detalle = rs.getString("detalle");
+            String estado = rs.getString("estado");
+
+            // Agregar una nueva fila a la tabla
+            tableModel.addRow(new Object[]{origen, detalle, estado});
+        }
+
+        // Asignar el modelo a la tabla
+        jTableResumenErrores.setModel(tableModel);
+
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+
+    }
+    
 
     private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
         String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
@@ -1137,6 +1249,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabelImagen;
     private javax.swing.JLabel jLabelUrlSeleccionada;
     private javax.swing.JPanel jPanel1;
@@ -1148,6 +1261,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1163,6 +1277,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JTable jTableEnlaces;
     private javax.swing.JTable jTableImagenes;
     private javax.swing.JTable jTableResumen;
+    private javax.swing.JTable jTableResumenErrores;
     private javax.swing.JTable jTableTexto;
     private javax.swing.JTable jTableTitle;
     private javax.swing.JTable jTableUrlsAnalizadas;
