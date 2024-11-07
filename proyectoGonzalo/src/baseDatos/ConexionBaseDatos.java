@@ -88,6 +88,7 @@ public class ConexionBaseDatos {
                          nivel TEXT,
                          contenido TEXT,
                          estado TEXT CHECK (estado IN ('Correcto', 'Error')) DEFAULT 'Correcto',
+                         informacion TEXT,
                          FOREIGN KEY (id_analisis) REFERENCES Analisis(id_analisis)
                      );""";
                

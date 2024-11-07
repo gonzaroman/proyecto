@@ -18,7 +18,7 @@ import org.jsoup.select.Elements;
 public class ComprobarEncabezados {
      String url;
      String idAnalisis;
-     String nivel,contenido,estado;
+     String nivel,contenido,estado,informacion;
 
     public String getUrl() {
         return url;
@@ -58,23 +58,26 @@ public class ComprobarEncabezados {
             if (h1Elements.isEmpty()) {
                 System.out.println("¡¡ERROR!! No se encontraron encabezados H1 en la página.");
                 estado="Error";
-                contenido="¡¡ERROR!! No se encontraron encabezados H1";
-                InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado);
+                contenido="No se encontraron encabezados H1";
+                informacion = "No se encontró el H1";
+                InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado,informacion);
             } else {
                 System.out.println("Encabezados H1:");
                 for (Element h1 : h1Elements) {
                     if (h1.text().length()==0){
                         System.out.println("ERROR h1 está vacío");
-                        contenido = "ERROR H1 está vacío";
+                        contenido = "H1 vacío";
                         estado = "Error";
+                        informacion = "El H1 está vacío";
                     }else{
                         System.out.println("Correcto");
                         contenido = h1.text();
                         estado = "Correcto";
+                        informacion = " H1 correcto";
                     }
                     System.out.println("-->" + h1.text());
                     currentH1 = h1.text();
-                    InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado);
+                    InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado,informacion);
                 }
             }
             
@@ -100,9 +103,11 @@ public class ComprobarEncabezados {
                     if(currentH1 != null){
                         System.out.println("Correcto");
                         estado = "Correcto";
+                        informacion = "estructura h2 Correcto";
                     }else{
                         System.out.println("!!ERROR!!");
                         estado = "Error";
+                        informacion = "El H2 no es hijo de un H1";
                     }
                 }
                 // Si encontramos un H3, lo mostramos como hijo del H2 actual
@@ -115,9 +120,11 @@ public class ComprobarEncabezados {
                     if(currentH2 != null){
                         System.out.println("        Correcto");
                          estado = "Correcto";
+                         informacion = "estructura h3 Correcto";
                     }else{
                         System.out.println("        !!ERROR!!");
                         estado = "Error";
+                        informacion = "El H3 no es hijo de un H2";
                     }
                 } 
                 // Si encontramos un H4, lo mostramos como hijo del último H3
@@ -131,16 +138,18 @@ public class ComprobarEncabezados {
                     if(currentH3 != null){
                         System.out.println("        Correcto");
                          estado = "Correcto";
+                         informacion = "estructura h4 Correcto";
                     }else{
                         System.out.println("        !!ERROR!!");
                         estado = "Error";
+                        informacion = "El H4 no es hijo de un H3";
                     }
                     
                     
                     
                 }
                 
-                InsertarEncabezados.insertaEncabezados(idAnalisis, nivel, contenido, estado);
+                InsertarEncabezados.insertaEncabezados(idAnalisis, nivel, contenido, estado,informacion);
             }
             
            

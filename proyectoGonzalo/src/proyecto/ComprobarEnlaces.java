@@ -58,11 +58,13 @@ public class ComprobarEnlaces {
     public void comprobar() throws InterruptedException {
 
         ExecutorService executor = Executors.newFixedThreadPool(10); // Limitar a 10 hilos simultáneos
+     //   ExecutorService executor = Executors.newFixedThreadPool(Math.min(10, links.size())); // Limitar el tamaño al número de enlaces o 10, lo que sea menor
+
 
         //devuelve true si la url está correcta, si es un 404 da error
         // Cantidad de enlaces internos y externos
         try {
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
+            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").timeout(5000).get();
             //.get();
             Elements links = doc.select("a[href]");
 
@@ -87,7 +89,7 @@ public class ComprobarEnlaces {
             }//fin del for
 
             executor.shutdown(); // No aceptar más tareas
-            executor.awaitTermination(5, TimeUnit.MINUTES); // Esperar hasta que todas las tareas finalice
+            executor.awaitTermination(10, TimeUnit.SECONDS); // Esperar hasta que todas las tareas finalice
 
             System.out.println("Enlaces internos: " + internalLinks);
             System.out.println("Enlaces externos: " + externalLinks);

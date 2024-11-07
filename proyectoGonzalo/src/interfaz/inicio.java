@@ -35,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -42,7 +43,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Gonzalo Román Márquez
  */
 public class inicio extends javax.swing.JFrame {
-
+     String idAnalisisActual = null;
+     DefaultTableModel initialModel ;
     /**
      * Creates new form inicio
      */
@@ -51,7 +53,7 @@ public class inicio extends javax.swing.JFrame {
         aplicarTemaClaro();
 
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
-        DefaultTableModel initialModel = new DefaultTableModel(
+       initialModel = new DefaultTableModel(
                 new String[]{"URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
         );
         jTableUrlsAnalizadas.setModel(initialModel);
@@ -92,6 +94,8 @@ public class inicio extends javax.swing.JFrame {
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String dominio = jTableUrlsAnalizadas.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
+                    
+                     idAnalisisActual = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     jLabelUrlSeleccionada.setText(dominio);
@@ -112,6 +116,8 @@ public class inicio extends javax.swing.JFrame {
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String urlSeleccionada = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
+                    
+                    idAnalisisActual = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     jLabelUrlSeleccionada.setText(urlSeleccionada);
@@ -213,13 +219,13 @@ public class inicio extends javax.swing.JFrame {
     
     private void ocultarIdAnalisis() {
         // Suponiendo que el ID está en la primera columna (índice 0)
-        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
+     /*   jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMaxWidth(0);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);*/
 
     }
 
@@ -310,6 +316,7 @@ public class inicio extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jButtonEliminarAnalisis = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTitle = new javax.swing.JTable();
@@ -398,6 +405,13 @@ public class inicio extends javax.swing.JFrame {
 
         jLabel5.setText("Dominios Analizados:");
 
+        jButtonEliminarAnalisis.setText("ELIMINAR");
+        jButtonEliminarAnalisis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarAnalisisActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -425,8 +439,10 @@ public class inicio extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29)
-                                .addComponent(jButtonAnalizar)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(jButtonAnalizar)
+                                .addGap(244, 244, 244)
+                                .addComponent(jButtonEliminarAnalisis)))
+                        .addGap(0, 349, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,7 +450,8 @@ public class inicio extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAnalizar))
+                    .addComponent(jButtonAnalizar)
+                    .addComponent(jButtonEliminarAnalisis))
                 .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -828,6 +845,51 @@ public class inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonTemaClaroActionPerformed
 
+    public static void eliminarAnalisis(String idAnalisis) {
+    String[] tablas = {"MetaTitle", "MetaDescription", "Encabezados", "Imagenes", "Enlaces", "Texto", "Analisis"};
+
+    try (Connection conn = Consultas.connect()) {
+        for (String tabla : tablas) {
+            String sql = "DELETE FROM " + tabla + " WHERE id_analisis = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, idAnalisis);
+                pstmt.executeUpdate();
+            }
+        }
+        System.out.println("Análisis con ID " + idAnalisis + " eliminado correctamente.");
+    } catch (SQLException e) {
+        System.out.println("Error al eliminar el análisis: " + e.getMessage());
+    }
+}
+    
+    
+    
+    private void jButtonEliminarAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarAnalisisActionPerformed
+                // TODO add your handling code here:
+    
+       //eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
+
+        if (idAnalisisActual != null) { // Verifica que hay un análisis seleccionado
+            eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
+            JOptionPane.showMessageDialog(this, "Análisis eliminado exitosamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona un análisis para eliminar.");
+        }
+        
+     
+       
+         selectDominioTabla(jTableDominios);
+        selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+        
+         selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, "");
+                
+               
+            
+            
+            
+        
+    }//GEN-LAST:event_jButtonEliminarAnalisisActionPerformed
+
     public static void selectDominioTabla(JTable jTableDominios) {
 
         String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha "
@@ -1155,7 +1217,7 @@ public class inicio extends javax.swing.JFrame {
                  "FROM MetaDescription " +
                  "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
                  "UNION ALL " +
-                 "SELECT nivel AS origen, contenido AS detalle, estado " +
+                 "SELECT nivel AS origen, contenido AS detalle, informacion " +
                  "FROM Encabezados " +
                  "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
                  "UNION ALL " +
@@ -1242,6 +1304,7 @@ public class inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnalizar;
+    private javax.swing.JButton jButtonEliminarAnalisis;
     private javax.swing.JButton jButtonTemaClaro;
     private javax.swing.JButton jButtonTemaOscuro;
     private javax.swing.JLabel jLabel1;

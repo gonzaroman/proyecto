@@ -28,13 +28,7 @@ public class Ejecutar {
       //String url ="";
          String dominio="";
         // TODO code application logic here
-         //url = "https://neoattack.com/";
-         //url = "https://www.snsmarketing.es/";
-         // url = "https://www.snsmarketing.es/blog/tendencias-para-2025-chatbots-e-inteligencia-artificial-en-el-marketing-digital/";
-         //url = "https://iesaugustobriga.educarex.es/";
-         //url = "https://neoattack.com/agencia-de-fgjfggmarketing-de-contenidos/"; //esta es para probar errores 404
-        //  url ="http://www.template-joomspirit.com"; // redireccion 301
-        
+       
         String rojo = "\u001B[31m"; //color rojo del mensaje en consola
     String verde = "\u001B[32m"; //color rojo del mensaje en consola
         //conexion base de datos
@@ -118,22 +112,32 @@ public class Ejecutar {
          
          ComprobarImagenes imagenesURL = new ComprobarImagenes(url,idAnalisis);
          imagenesURL.comprobar();
+         
+      
        
         
          ComprobarEnlaces enlaces = new ComprobarEnlaces(url,dominio_y_protocolo,idAnalisis);
+         
+         
              try {
                  enlaces.comprobar();
              } catch (InterruptedException ex) {
                  Logger.getLogger(Ejecutar.class.getName()).log(Level.SEVERE, null, ex);
              }
-         
-         
+             // Dentro del evento que llama a ComprobarEnlaces, crear un nuevo hilo para acelerar el analisis
+             /*new Thread(() -> {
+                 try {
+                     enlaces.comprobar();
+                 } catch (InterruptedException ex) {
+                     Logger.getLogger(Ejecutar.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }).start();*/
+
+       
           
-         ComprobarTexto texto = new ComprobarTexto(url,idAnalisis);
-        texto.comprobar();
+               ComprobarTexto texto = new ComprobarTexto(url,idAnalisis);
+         //  texto.comprobar();
         texto.calcularDensidad();
-          
-          
            
             //System.out.println(doc.html());
             
