@@ -51,7 +51,7 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
         aplicarTemaClaro();
-
+         jLabelAnalizando.setVisible(false);
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
        initialModel = new DefaultTableModel(
                 new String[]{"ID","URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
@@ -66,6 +66,9 @@ public class inicio extends javax.swing.JFrame {
         }*/
          desactivarPestañas();
           ocultarIdAnalisis();
+         
+              // Desactiva el botón de eliminar al inicio
+jButtonEliminarAnalisis.setEnabled(false);
         
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -80,10 +83,13 @@ public class inicio extends javax.swing.JFrame {
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
                   
-                  //  jLabelUrlSeleccionada.setText(dominio);
-                    
+                   jLabelDominioSeleccionado.setText(dominio);
+                    jLabelUrlAbajo.setText("");  
                     ocultarIdAnalisis();
                     establecerAnchocolumnas();
+                    jButtonEliminarAnalisis.setEnabled(false);//ocultamos el boton eliminar
+                     desactivarPestañas();
+                      jLabelUrlSeleccionada.setText("");
 
                 }
 
@@ -100,13 +106,15 @@ public class inicio extends javax.swing.JFrame {
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String dominio = jTableUrlsAnalizadas.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
+                    String fecha = jTableUrlsAnalizadas.getValueAt(selectedRow, 2).toString();
                     
                      idAnalisisActual = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     jLabelUrlSeleccionada.setText(dominio);
-
+                    jLabelUrlAbajo.setText(fecha+" "+dominio);
                     rellenaLabels(idAnalisis);
+                    jButtonEliminarAnalisis.setEnabled(true);//activamos el boton eliminar
                     
                     // Habilitar todas las pestañas al seleccionar una URL
                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
@@ -127,15 +135,17 @@ public class inicio extends javax.swing.JFrame {
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String urlSeleccionada = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
-                    
+                     String fecha = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 2).toString();
                     idAnalisisActual = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     jLabelUrlSeleccionada.setText(urlSeleccionada);
+                    jLabelUrlAbajo.setText(fecha+" "+urlSeleccionada);
 
                     /*selectMetaTitleTabla(jTableTitle,idAnalisis);
                      selectMetaDescriptionTabla(jTableDescription,idAnalisis);*/
                     rellenaLabels(idAnalisis);
+                     jButtonEliminarAnalisis.setEnabled(true);//desactivamos el boton eliminar
                     
                     // Habilitar todas las pestañas al seleccionar una URL
                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
@@ -146,6 +156,11 @@ public class inicio extends javax.swing.JFrame {
 
             }
         });
+        
+    
+
+
+
         
         
        jTableImagenes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -220,7 +235,8 @@ public class inicio extends javax.swing.JFrame {
                     jTableUrlsAnalizadas.setRowSelectionInterval(0, 0);
                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(0, 0).toString();
                     rellenaLabels(idAnalisis); // Cargar datos de la primera fila
-                   jLabelUrlSeleccionada.setText(jTableUrlsAnalizadas.getValueAt(0, 1).toString()); // Mostrar URL
+                   //jLabelUrlSeleccionada.setText(jTableUrlsAnalizadas.getValueAt(0, 1).toString()); // Mostrar URL
+                    jLabelUrlSeleccionada.setText("");
                 }
                 
                  // Seleccionar la primera fila después de cargar los datos
@@ -348,6 +364,9 @@ public class inicio extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButtonEliminarAnalisis = new javax.swing.JButton();
+        jLabelDominioSeleccionado = new javax.swing.JLabel();
+        jLabelUrlAbajo = new javax.swing.JLabel();
+        jLabelAnalizando = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTitle = new javax.swing.JTable();
@@ -443,47 +462,62 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
+        jLabelDominioSeleccionado.setText(".");
+
+        jLabelUrlAbajo.setText("Url seleccionada");
+
+        jLabelAnalizando.setText("...ANALIZANDO...");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(471, 471, 471)
+                .addComponent(jLabelUrlAbajo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonEliminarAnalisis)
+                .addGap(26, 26, 26))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(26, 26, 26)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(29, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelDominioSeleccionado)
+                        .addGap(0, 1060, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel3))
+                                .addGap(5, 5, 5)
+                                .addComponent(jLabelAnalizando))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButtonAnalizar)
-                                .addGap(292, 292, 292)
-                                .addComponent(jButtonEliminarAnalisis)))
-                        .addGap(0, 301, Short.MAX_VALUE))))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonAnalizar))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5))
+                                    .addGap(26, 26, 26)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAnalizar)
-                    .addComponent(jButtonEliminarAnalisis))
-                .addGap(7, 7, 7)
+                    .addComponent(jButtonAnalizar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelAnalizando)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -491,11 +525,18 @@ public class inicio extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabelDominioSeleccionado))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonEliminarAnalisis))
+                    .addComponent(jLabelUrlAbajo, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(21, 21, 21))
         );
 
         jTabbedPane1.addTab("GENERAL", jPanel1);
@@ -542,7 +583,7 @@ public class inicio extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
                         .addComponent(jScrollPane2)))
-                .addContainerGap(367, Short.MAX_VALUE))
+                .addContainerGap(345, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -580,7 +621,7 @@ public class inicio extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(281, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -614,7 +655,7 @@ public class inicio extends javax.swing.JFrame {
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1062, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jLabelImagen)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -651,7 +692,7 @@ public class inicio extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 1042, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -683,7 +724,7 @@ public class inicio extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(796, Short.MAX_VALUE))
+                .addContainerGap(774, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -733,7 +774,7 @@ public class inicio extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -763,7 +804,7 @@ public class inicio extends javax.swing.JFrame {
             }
         });
 
-        jLabelUrlSeleccionada.setText("URL");
+        jLabelUrlSeleccionada.setText("Realiza un Analisis");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -774,13 +815,13 @@ public class inicio extends javax.swing.JFrame {
                 .addComponent(jLabelUrlSeleccionada)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonTemaClaro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonTemaOscuro)
-                .addGap(48, 48, 48))
+                .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -792,7 +833,7 @@ public class inicio extends javax.swing.JFrame {
                     .addComponent(jLabelUrlSeleccionada))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -801,8 +842,10 @@ public class inicio extends javax.swing.JFrame {
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
       
-
+         jLabelAnalizando.setVisible(true);
         String url = jTextFieldURL.getText();
+        
+        jLabelAnalizando.setText("...Analizando..."+url);
         
         jTextFieldURL.setText("");
 
@@ -825,7 +868,7 @@ public class inicio extends javax.swing.JFrame {
 
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
-               
+                jLabelAnalizando.setVisible(false);
 
             }
         };
@@ -854,6 +897,7 @@ public class inicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonTemaOscuroActionPerformed
 
+    
     public void aplicarTemaClaro() {
         try {
             // Cambiar al tema CLARO de macOS
@@ -902,7 +946,7 @@ public class inicio extends javax.swing.JFrame {
                 // TODO add your handling code here:
     
        //eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
-
+       
         if (idAnalisisActual != null) { // Verifica que hay un análisis seleccionado
             eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
             JOptionPane.showMessageDialog(this, "Análisis eliminado exitosamente.");
@@ -925,6 +969,8 @@ public class inicio extends javax.swing.JFrame {
             model.setRowCount(0);
             jLabelUrlSeleccionada.setText("No hay análisis disponibles");
         }
+        jButtonEliminarAnalisis.setEnabled(false);
+        jLabelUrlAbajo.setText("Análisis Eliminado");
     
     }//GEN-LAST:event_jButtonEliminarAnalisisActionPerformed
 
@@ -1352,7 +1398,10 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelAnalizando;
+    private javax.swing.JLabel jLabelDominioSeleccionado;
     private javax.swing.JLabel jLabelImagen;
+    private javax.swing.JLabel jLabelUrlAbajo;
     private javax.swing.JLabel jLabelUrlSeleccionada;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
