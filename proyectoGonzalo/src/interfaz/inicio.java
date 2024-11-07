@@ -57,11 +57,10 @@ public class inicio extends javax.swing.JFrame {
         initComponents();
         aplicarTemaClaro();
         jLabelAnalizando.setVisible(false);
-        
+
         desactivarReordenarColumnas();
-        
+
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
-               
         initialModel = new DefaultTableModel(
                 new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
             @Override
@@ -71,9 +70,6 @@ public class inicio extends javax.swing.JFrame {
             }
         };
 
-        
-        
-        
         jTableUrlsAnalizadas.setModel(initialModel);
         jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
         establecerAnchocolumnas();
@@ -244,8 +240,8 @@ public class inicio extends javax.swing.JFrame {
         });
 
     }
-    
-    private void desactivarReordenarColumnas(){
+
+    private void desactivarReordenarColumnas() {
         jTableUrlsAnalizadas.getTableHeader().setReorderingAllowed(false);
         jTableUrlsAnalizadasSeleccionada.getTableHeader().setReorderingAllowed(false);
         jTableDominios.getTableHeader().setReorderingAllowed(false);
@@ -317,47 +313,53 @@ public class inicio extends javax.swing.JFrame {
         selectListadoResumenErroresTabla(jTableResumenErrores, idAnalisis);
 
         ocultarIdAnalisis();
+        establecerAnchocolumnas();
 
     }
 
     private void establecerAnchocolumnas() {
+        // Configuración de ancho de columnas para cada tabla
+        int[] anchosUrlsAnalizadas = {0, 400, 150, 100, 100, 100, 100};
+        int[] anchosUrlsAnalizadasSeleccionada = {0, 700, 150, 100, 100, 100, 100};
+        int[] anchosDominios = {300, 200};
+        int[] anchosTitle = {600, 50};
+        int[] anchosDescription = {600, 50};
+        int[] anchosEncabezados = {50, 700, 50};
+        int[] anchosImagenes = {400, 300, 50};
+        int[] anchosEnlaces = {400, 50, 200, 50};
+        int[] anchosTexto = {400, 100, 200};
+        int[] anchosResumen = {400, 100, 100, 100, 100, 100};
+        int[] anchosResumenErrores = {100, 700, 300};
 
-        //establecer ancho de las columnas
-        jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(400);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(2).setPreferredWidth(100);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(3).setPreferredWidth(100);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(4).setPreferredWidth(100);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
+        // Aplicar ajustes de ancho y alineación
+        ajustarAnchoColumnas(jTableUrlsAnalizadas, anchosUrlsAnalizadas, true);
+        ajustarAnchoColumnas(jTableUrlsAnalizadasSeleccionada, anchosUrlsAnalizadasSeleccionada, true);
+        ajustarAnchoColumnas(jTableDominios, anchosDominios, true);
 
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(700);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(150);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setPreferredWidth(100);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setPreferredWidth(100);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setPreferredWidth(100);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setPreferredWidth(100);
+        ajustarAnchoColumnas(jTableTitle, anchosTitle, true);
+        ajustarAnchoColumnas(jTableDescription, anchosDescription, true);
+        ajustarAnchoColumnas(jTableEncabezados, anchosEncabezados, true);
+        ajustarAnchoColumnas(jTableImagenes, anchosImagenes, true);
+        ajustarAnchoColumnas(jTableEnlaces, anchosEnlaces, true);
+        ajustarAnchoColumnas(jTableTexto, anchosTexto, true);
 
-        jTableDominios.getColumnModel().getColumn(0).setPreferredWidth(300);
-        jTableDominios.getColumnModel().getColumn(1).setPreferredWidth(200);
+        ajustarAnchoColumnas(jTableResumen, anchosResumen, true);
+        ajustarAnchoColumnas(jTableResumenErrores, anchosResumenErrores, true);
 
-        //alineacion de las columnas
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
+    }
 
-        jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-        jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
-        jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-        jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+// Método de utilidad para ajustar ancho y alineación de columnas en cualquier JTable
+    private void ajustarAnchoColumnas(JTable table, int[] anchos, boolean alinearCentro) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-
-        jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
-
+        // Aplicar ancho y alineación en las columnas indicadas
+        for (int i = 0; i < anchos.length && i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            if (alinearCentro && i > 1) { // Aplicar alineación en las columnas a partir de la segunda
+                table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
     }
 
     /**
@@ -882,8 +884,8 @@ public class inicio extends javax.swing.JFrame {
             jButtonAnalizar.setEnabled(true);
             return;
         }
-        
-         if ( urlText.isEmpty()) {
+
+        if (urlText.isEmpty()) {
             jButtonAnalizar.setEnabled(true);
             return;
         }
@@ -902,20 +904,20 @@ public class inicio extends javax.swing.JFrame {
             @Override
             protected Void doInBackground() {
                 try {
-                  Boolean resultado =  Ejecutar.hacer(url); // Ejecuta el proceso en segundo plano
-                  
-                  if (!resultado){
-                      //Mensaje de pagina no encontrada o rota
-                      // Mensaje de página no encontrada o rota
-                JOptionPane.showMessageDialog(
-                    inicio.this,
-                    "Error: La URL \n"+url+" \n no se encuentra o está rota.",
-                    "Error de Análisis",
-                    JOptionPane.ERROR_MESSAGE
-                );
-                      
-                  }
-                  
+                    Boolean resultado = Ejecutar.hacer(url); // Ejecuta el proceso en segundo plano
+
+                    if (!resultado) {
+                        //Mensaje de pagina no encontrada o rota
+                        // Mensaje de página no encontrada o rota
+                        JOptionPane.showMessageDialog(
+                                inicio.this,
+                                "Error: La URL \n" + url + " \n no se encuentra o está rota.",
+                                "Error de Análisis",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                    }
+
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1097,7 +1099,7 @@ public class inicio extends javax.swing.JFrame {
 
     public void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
         String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1141,7 +1143,7 @@ public class inicio extends javax.swing.JFrame {
 
     public void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '" + dominio + "' ORDER BY fecha_analisis DESC ";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1187,7 +1189,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META TITLE", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META TITLE", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1220,7 +1222,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT meta_descripcion, estado From MetaDescription where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META DESCRIPTION", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META DESCRIPTION", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1253,7 +1255,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT nivel,contenido, estado From Encabezados where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"NIVEL", "CONTENIDO", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"NIVEL", "CONTENIDO", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1287,7 +1289,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"RUTA IMAGEN", "ALT", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"RUTA IMAGEN", "ALT", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1321,7 +1323,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO", "ANCHOR TEXT", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO", "ANCHOR TEXT", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1356,7 +1358,7 @@ public class inicio extends javax.swing.JFrame {
         String sql = "SELECT palabra,frecuencia,densidad From Texto where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES", "DENSIDAD(%)"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES", "DENSIDAD(%)"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1388,7 +1390,7 @@ public class inicio extends javax.swing.JFrame {
     public static void selectResumenTabla(JTable jTableResumen, String idAnalisis) {
 
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
@@ -1458,7 +1460,7 @@ public class inicio extends javax.swing.JFrame {
                 + "FROM Enlaces "
                 + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0){
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
