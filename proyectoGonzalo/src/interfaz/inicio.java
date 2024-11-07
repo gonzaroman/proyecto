@@ -29,6 +29,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -36,6 +37,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -45,6 +47,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class inicio extends javax.swing.JFrame {
      String idAnalisisActual = null;
      DefaultTableModel initialModel ;
+     private Timer timer; //timer para poder hacer que el mensaje analizando parpadee
     /**
      * Creates new form inicio
      */
@@ -66,6 +69,18 @@ public class inicio extends javax.swing.JFrame {
         }*/
          desactivarPestañas();
           ocultarIdAnalisis();
+          
+          // Configurar el Timer para el efecto de parpadeo
+        timer = new Timer(500, e -> {
+            // Alterna entre dos colores para el efecto de parpadeo
+            if (jLabelAnalizando.getForeground().equals(Color.LIGHT_GRAY)) {
+                jLabelAnalizando.setForeground(Color.GRAY);
+            } else {
+                jLabelAnalizando.setForeground(Color.LIGHT_GRAY);
+            }
+        });
+          
+          
          
               // Desactiva el botón de eliminar al inicio
 jButtonEliminarAnalisis.setEnabled(false);
@@ -839,8 +854,29 @@ jButtonEliminarAnalisis.setEnabled(false);
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Método auxiliar para validar la URL
+    private boolean isUrlValida(String urlText) {
+        try {
+            new URL(urlText); // Si no lanza una excepción, es válida
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+    
+    
+    
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
+        jButtonAnalizar.setEnabled(false);
+         String urlText = jTextFieldURL.getText();
+    
+    // Verificar si la URL es válida
+    if (!isUrlValida(urlText)) {
+        JOptionPane.showMessageDialog(this, "La URL no está bien formada. Por favor, ingrese una URL válida.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+        
       
          jLabelAnalizando.setVisible(true);
         String url = jTextFieldURL.getText();
@@ -848,6 +884,8 @@ jButtonEliminarAnalisis.setEnabled(false);
         jLabelAnalizando.setText("...Analizando..."+url);
         
         jTextFieldURL.setText("");
+        
+          timer.start(); // Inicia el temporizador
 
         // Crear un SwingWorker para ejecutar el análisis en segundo plano
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -869,6 +907,38 @@ jButtonEliminarAnalisis.setEnabled(false);
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 jLabelAnalizando.setVisible(false);
+                 timer.stop(); // Detiene el temporizador
+                 jButtonAnalizar.setEnabled(true);
+                URL url1;
+                try {
+                    url1 = new URL(url);
+                    String dominio = url1.getHost();
+                    selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio); 
+                    
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+              // Seleccionar la primera fila y darle el foco
+    if (jTableUrlsAnalizadas.getRowCount() > 0) {
+        jTableUrlsAnalizadas.setRowSelectionInterval(0, 0); // Selecciona la primera fila
+        jTableUrlsAnalizadas.requestFocus(); // Coloca el foco en la tabla
+
+        // Simula el clic en la primera fila
+        java.awt.event.MouseEvent clickEvent = new java.awt.event.MouseEvent(
+            jTableUrlsAnalizadas,
+            java.awt.event.MouseEvent.MOUSE_CLICKED,
+            System.currentTimeMillis(),
+            0,
+            0,
+            0,
+            1,
+            false
+        );
+        jTableUrlsAnalizadas.dispatchEvent(clickEvent);
+    }  
+              
+                
 
             }
         };
