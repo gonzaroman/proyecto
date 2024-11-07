@@ -54,13 +54,18 @@ public class inicio extends javax.swing.JFrame {
 
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
        initialModel = new DefaultTableModel(
-                new String[]{"URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
+                new String[]{"ID","URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
         );
         jTableUrlsAnalizadas.setModel(initialModel);
         jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
-        establecerAnchocolumnas();
+       establecerAnchocolumnas();
         
-         
+        // Inicializar el JTabbedPane desactivando todas las pestañas
+        for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+            jTabbedPane1.setEnabledAt(i, false);
+        }
+        
+          ocultarIdAnalisis();
         
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -74,11 +79,12 @@ public class inicio extends javax.swing.JFrame {
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
-                    establecerAnchocolumnas();
-
+                  
                   //  jLabelUrlSeleccionada.setText(dominio);
                     
                     ocultarIdAnalisis();
+                    establecerAnchocolumnas();
+
                 }
 
             }
@@ -101,6 +107,11 @@ public class inicio extends javax.swing.JFrame {
                     jLabelUrlSeleccionada.setText(dominio);
 
                     rellenaLabels(idAnalisis);
+                    
+                    // Habilitar todas las pestañas al seleccionar una URL
+                    for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
+                        jTabbedPane1.setEnabledAt(i, true);
+                    }
                 }
 
             }
@@ -125,6 +136,11 @@ public class inicio extends javax.swing.JFrame {
                     /*selectMetaTitleTabla(jTableTitle,idAnalisis);
                      selectMetaDescriptionTabla(jTableDescription,idAnalisis);*/
                     rellenaLabels(idAnalisis);
+                    
+                    // Habilitar todas las pestañas al seleccionar una URL
+                    for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
+                        jTabbedPane1.setEnabledAt(i, true);
+                    }
 
                 }
 
@@ -183,8 +199,7 @@ public class inicio extends javax.swing.JFrame {
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 selectDominioTabla(jTableDominios);
 
-                //  selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada,"www.snsmarketing.es");
-                establecerAnchocolumnas();
+             //   establecerAnchocolumnas();
                  ocultarIdAnalisis(); // Ocultar ID
                  
                 
@@ -225,13 +240,13 @@ public class inicio extends javax.swing.JFrame {
     
     private void ocultarIdAnalisis() {
         // Suponiendo que el ID está en la primera columna (índice 0)
-     /*   jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
+       jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(0);
 
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMaxWidth(0);
-        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);*/
+        jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);
 
     }
 
@@ -257,7 +272,7 @@ public class inicio extends javax.swing.JFrame {
     private void establecerAnchocolumnas() {
 
         //establecer ancho de las columnas
-      
+        
         jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(400);
         jTableUrlsAnalizadas.getColumnModel().getColumn(2).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(3).setPreferredWidth(100);
@@ -446,9 +461,9 @@ public class inicio extends javax.swing.JFrame {
                                 .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29)
                                 .addComponent(jButtonAnalizar)
-                                .addGap(244, 244, 244)
+                                .addGap(292, 292, 292)
                                 .addComponent(jButtonEliminarAnalisis)))
-                        .addGap(0, 349, Short.MAX_VALUE))))
+                        .addGap(0, 301, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -778,6 +793,8 @@ public class inicio extends javax.swing.JFrame {
       
 
         String url = jTextFieldURL.getText();
+        
+        jTextFieldURL.setText("");
 
         // Crear un SwingWorker para ejecutar el análisis en segundo plano
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -798,6 +815,7 @@ public class inicio extends javax.swing.JFrame {
 
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+               
 
             }
         };

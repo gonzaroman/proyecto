@@ -114,11 +114,11 @@
                                       <Component id="jTextFieldURL" min="-2" pref="478" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                                       <Component id="jButtonAnalizar" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="244" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="292" max="-2" attributes="0"/>
                                       <Component id="jButtonEliminarAnalisis" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace min="0" pref="349" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="301" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
