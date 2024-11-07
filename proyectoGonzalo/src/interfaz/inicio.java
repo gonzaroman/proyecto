@@ -61,10 +61,10 @@ public class inicio extends javax.swing.JFrame {
        establecerAnchocolumnas();
         
         // Inicializar el JTabbedPane desactivando todas las pestañas
-        for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+       /* for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
             jTabbedPane1.setEnabledAt(i, false);
-        }
-        
+        }*/
+         desactivarPestañas();
           ocultarIdAnalisis();
         
         // Agregar MouseListener para capturar clic en jTableDominios
@@ -238,6 +238,8 @@ public class inicio extends javax.swing.JFrame {
     
     }
     
+  
+    
     private void ocultarIdAnalisis() {
         // Suponiendo que el ID está en la primera columna (índice 0)
        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
@@ -247,6 +249,14 @@ public class inicio extends javax.swing.JFrame {
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+    }
+    
+      private void desactivarPestañas(){
+         // Inicializar el JTabbedPane desactivando todas las pestañas
+        for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+            jTabbedPane1.setEnabledAt(i, false);
+        }
 
     }
 
@@ -901,20 +911,24 @@ public class inicio extends javax.swing.JFrame {
         }
         
      
-       
-         selectDominioTabla(jTableDominios);
         selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
+         selectDominioTabla(jTableDominios);
         
+         desactivarPestañas();
          
-     cargaPrimerosDatos();
-               
-            
-            
-            
-        
+         cargaPrimerosDatos();
+         
+         
+          if (jTableDominios.getRowCount() == 0) {
+            // Si no quedan dominios, vacía la tabla de URLs analizadas del dominio
+            DefaultTableModel model = (DefaultTableModel) jTableUrlsAnalizadasSeleccionada.getModel();
+            model.setRowCount(0);
+            jLabelUrlSeleccionada.setText("No hay análisis disponibles");
+        }
+    
     }//GEN-LAST:event_jButtonEliminarAnalisisActionPerformed
 
-    public static void selectDominioTabla(JTable jTableDominios) {
+    public void selectDominioTabla(JTable jTableDominios) {
 
         String sql = "SELECT dominio, COUNT(*) AS cantidad_analisis, MAX(fecha_analisis) AS ultima_fecha "
                 + "FROM Analisis "
@@ -943,7 +957,7 @@ public class inicio extends javax.swing.JFrame {
 
     }
 
-    public static void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
+    public void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
         String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
@@ -974,13 +988,14 @@ public class inicio extends javax.swing.JFrame {
 
             // Asignar el modelo a la tabla
             jTableUrlsAnalizadas.setModel(tableModel);
+            ocultarIdAnalisis(); // Oculta la columna ID después de cargar los datos
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
+    public void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '" + dominio + "' ORDER BY fecha_analisis DESC ";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
@@ -1011,7 +1026,7 @@ public class inicio extends javax.swing.JFrame {
 
             // Asignar el modelo a la tabla
             jTableUrlsAnalizadasSeleccionada.setModel(tableModel);
-
+  ocultarIdAnalisis();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
