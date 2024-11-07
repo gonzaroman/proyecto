@@ -45,32 +45,34 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Gonzalo Román Márquez
  */
 public class inicio extends javax.swing.JFrame {
-     String idAnalisisActual = null;
-     DefaultTableModel initialModel ;
-     private Timer timer; //timer para poder hacer que el mensaje analizando parpadee
+
+    String idAnalisisActual = null;
+    DefaultTableModel initialModel;
+    private Timer timer; //timer para poder hacer que el mensaje analizando parpadee
+
     /**
      * Creates new form inicio
      */
     public inicio() {
         initComponents();
         aplicarTemaClaro();
-         jLabelAnalizando.setVisible(false);
+        jLabelAnalizando.setVisible(false);
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
-       initialModel = new DefaultTableModel(
-                new String[]{"ID","URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
+        initialModel = new DefaultTableModel(
+                new String[]{"ID", "URL", "Fecha de Análisis", "Título", "Descripción", "Encabezados", "Imágenes", "Enlaces"}, 0
         );
         jTableUrlsAnalizadas.setModel(initialModel);
         jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
-       establecerAnchocolumnas();
-        
+        establecerAnchocolumnas();
+
         // Inicializar el JTabbedPane desactivando todas las pestañas
-       /* for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+        /* for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
             jTabbedPane1.setEnabledAt(i, false);
         }*/
-         desactivarPestañas();
-          ocultarIdAnalisis();
-          
-          // Configurar el Timer para el efecto de parpadeo
+        desactivarPestañas();
+        ocultarIdAnalisis();
+
+        // Configurar el Timer para el efecto de parpadeo
         timer = new Timer(500, e -> {
             // Alterna entre dos colores para el efecto de parpadeo
             if (jLabelAnalizando.getForeground().equals(Color.LIGHT_GRAY)) {
@@ -79,12 +81,10 @@ public class inicio extends javax.swing.JFrame {
                 jLabelAnalizando.setForeground(Color.LIGHT_GRAY);
             }
         });
-          
-          
-         
-              // Desactiva el botón de eliminar al inicio
-jButtonEliminarAnalisis.setEnabled(false);
-        
+
+        // Desactiva el botón de eliminar al inicio
+        jButtonEliminarAnalisis.setEnabled(false);
+
         // Agregar MouseListener para capturar clic en jTableDominios
         jTableDominios.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -97,14 +97,14 @@ jButtonEliminarAnalisis.setEnabled(false);
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
                     selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
-                  
-                   jLabelDominioSeleccionado.setText(dominio);
-                    jLabelUrlAbajo.setText("");  
+
+                    jLabelDominioSeleccionado.setText(dominio);
+                    jLabelUrlAbajo.setText("");
                     ocultarIdAnalisis();
                     establecerAnchocolumnas();
                     jButtonEliminarAnalisis.setEnabled(false);//ocultamos el boton eliminar
-                     desactivarPestañas();
-                      jLabelUrlSeleccionada.setText("");
+                    desactivarPestañas();
+                    jLabelUrlSeleccionada.setText("");
 
                 }
 
@@ -122,15 +122,15 @@ jButtonEliminarAnalisis.setEnabled(false);
                     String dominio = jTableUrlsAnalizadas.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
                     String fecha = jTableUrlsAnalizadas.getValueAt(selectedRow, 2).toString();
-                    
-                     idAnalisisActual = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
+
+                    idAnalisisActual = jTableUrlsAnalizadas.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
-                    jLabelUrlSeleccionada.setText(dominio);
-                    jLabelUrlAbajo.setText(fecha+" "+dominio);
+                    jLabelUrlSeleccionada.setText(fecha + " " + dominio);
+                    jLabelUrlAbajo.setText(fecha + " " + dominio);
                     rellenaLabels(idAnalisis);
                     jButtonEliminarAnalisis.setEnabled(true);//activamos el boton eliminar
-                    
+
                     // Habilitar todas las pestañas al seleccionar una URL
                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
                         jTabbedPane1.setEnabledAt(i, true);
@@ -150,18 +150,18 @@ jButtonEliminarAnalisis.setEnabled(false);
                     // Obtener el valor de la columna donde está el dominio (por ejemplo, columna 0)
                     String urlSeleccionada = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 1).toString();
                     String idAnalisis = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
-                     String fecha = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 2).toString();
+                    String fecha = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 2).toString();
                     idAnalisisActual = jTableUrlsAnalizadasSeleccionada.getValueAt(selectedRow, 0).toString();
 
                     // Llamar al método para mostrar los análisis del dominio seleccionado en otra tabla
-                    jLabelUrlSeleccionada.setText(urlSeleccionada);
-                    jLabelUrlAbajo.setText(fecha+" "+urlSeleccionada);
+                    jLabelUrlSeleccionada.setText(fecha + " " + urlSeleccionada);
+                    jLabelUrlAbajo.setText(fecha + " " + urlSeleccionada);
 
                     /*selectMetaTitleTabla(jTableTitle,idAnalisis);
                      selectMetaDescriptionTabla(jTableDescription,idAnalisis);*/
                     rellenaLabels(idAnalisis);
-                     jButtonEliminarAnalisis.setEnabled(true);//desactivamos el boton eliminar
-                    
+                    jButtonEliminarAnalisis.setEnabled(true);//desactivamos el boton eliminar
+
                     // Habilitar todas las pestañas al seleccionar una URL
                     for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
                         jTabbedPane1.setEnabledAt(i, true);
@@ -171,50 +171,43 @@ jButtonEliminarAnalisis.setEnabled(false);
 
             }
         });
-        
-    
 
+        jTableImagenes.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int selectedRow = jTableImagenes.getSelectedRow(); // Obtener la fila seleccionada
 
+                if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
+                    String urlImagen = jTableImagenes.getValueAt(selectedRow, 0).toString();
+                    // Limpiar cualquier texto o imagen previa en jLabelImagen
+                    jLabelImagen.setIcon(null);
+                    jLabelImagen.setText("");
+                    try {
+                        // Crear conexión con el User-Agent especificado
+                        URL url = new URL(urlImagen);
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36");
 
-        
-        
-       jTableImagenes.addMouseListener(new java.awt.event.MouseAdapter() {
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent evt) {
-        int selectedRow = jTableImagenes.getSelectedRow(); // Obtener la fila seleccionada
+                        // Leer la imagen desde la conexión
+                        Image image = ImageIO.read(connection.getInputStream());
 
-        if (selectedRow != -1) { // Asegurarse de que hay una fila seleccionada
-            String urlImagen = jTableImagenes.getValueAt(selectedRow, 0).toString();
-             // Limpiar cualquier texto o imagen previa en jLabelImagen
-            jLabelImagen.setIcon(null);
-            jLabelImagen.setText("");
-            try {
-                // Crear conexión con el User-Agent especificado
-                URL url = new URL(urlImagen);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36");
+                        if (image != null) {
 
-                // Leer la imagen desde la conexión
-                Image image = ImageIO.read(connection.getInputStream());
-                
-                if (image != null) {
+                            // Escalar la imagen para ajustarla al JLabel
+                            Image scaledImage = image.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                            jLabelImagen.setIcon(new ImageIcon(scaledImage));
+                        } else {
+                            System.out.println("La imagen no se puede cargar");
+                            jLabelImagen.setText("no se puede cargar");
+                        }
 
-                // Escalar la imagen para ajustarla al JLabel
-                Image scaledImage = image.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-                jLabelImagen.setIcon(new ImageIcon(scaledImage));
-                }else{
-                    System.out.println("La imagen no se puede cargar");
-                    jLabelImagen.setText("no se puede cargar");
+                    } catch (IOException e) {
+                        //e.printStackTrace();
+                        System.out.println("No se pudo cargar la imagen desde la URL proporcionada.");
+                    }
                 }
-
-            } catch (IOException e) {
-                //e.printStackTrace();
-                System.out.println("No se pudo cargar la imagen desde la URL proporcionada.");
             }
-        }
-    }
-});
-
+        });
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -229,51 +222,42 @@ jButtonEliminarAnalisis.setEnabled(false);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 selectDominioTabla(jTableDominios);
 
-             //   establecerAnchocolumnas();
-                 ocultarIdAnalisis(); // Ocultar ID
-                 
-                
-                 cargaPrimerosDatos();
-                 
-                 
-                 
-                 
-                 
+                //   establecerAnchocolumnas();
+                ocultarIdAnalisis(); // Ocultar ID
+
+                cargaPrimerosDatos();
+
             }
         });
 
     }
-    
-    private void cargaPrimerosDatos(){
-        // Seleccionar la primera fila después de cargar los datos
-                if (jTableUrlsAnalizadas.getRowCount() > 0) {
-                    jTableUrlsAnalizadas.setRowSelectionInterval(0, 0);
-                    String idAnalisis = jTableUrlsAnalizadas.getValueAt(0, 0).toString();
-                    rellenaLabels(idAnalisis); // Cargar datos de la primera fila
-                   //jLabelUrlSeleccionada.setText(jTableUrlsAnalizadas.getValueAt(0, 1).toString()); // Mostrar URL
-                    jLabelUrlSeleccionada.setText("");
-                }
-                
-                 // Seleccionar la primera fila después de cargar los datos
-                if (jTableDominios.getRowCount() > 0) {
-                    jTableDominios.setRowSelectionInterval(0, 0);
-                    String idAnalisis = jTableDominios.getValueAt(0, 0).toString();
-                   selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, idAnalisis);
-                    establecerAnchocolumnas();
 
-                    ocultarIdAnalisis();
-                   
-                   
-                }
-    
-    
+    private void cargaPrimerosDatos() {
+        // Seleccionar la primera fila después de cargar los datos
+        if (jTableUrlsAnalizadas.getRowCount() > 0) {
+            jTableUrlsAnalizadas.setRowSelectionInterval(0, 0);
+            String idAnalisis = jTableUrlsAnalizadas.getValueAt(0, 0).toString();
+            rellenaLabels(idAnalisis); // Cargar datos de la primera fila
+            //jLabelUrlSeleccionada.setText(jTableUrlsAnalizadas.getValueAt(0, 1).toString()); // Mostrar URL
+            jLabelUrlSeleccionada.setText("");
+        }
+
+        // Seleccionar la primera fila después de cargar los datos
+        if (jTableDominios.getRowCount() > 0) {
+            jTableDominios.setRowSelectionInterval(0, 0);
+            String idAnalisis = jTableDominios.getValueAt(0, 0).toString();
+            selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, idAnalisis);
+            establecerAnchocolumnas();
+
+            ocultarIdAnalisis();
+
+        }
+
     }
-    
-  
-    
+
     private void ocultarIdAnalisis() {
         // Suponiendo que el ID está en la primera columna (índice 0)
-       jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMinWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableUrlsAnalizadas.getColumnModel().getColumn(0).setPreferredWidth(0);
 
@@ -282,9 +266,9 @@ jButtonEliminarAnalisis.setEnabled(false);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(0).setPreferredWidth(0);
 
     }
-    
-      private void desactivarPestañas(){
-         // Inicializar el JTabbedPane desactivando todas las pestañas
+
+    private void desactivarPestañas() {
+        // Inicializar el JTabbedPane desactivando todas las pestañas
         for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
             jTabbedPane1.setEnabledAt(i, false);
         }
@@ -302,18 +286,16 @@ jButtonEliminarAnalisis.setEnabled(false);
         selectEnlacesTabla(jTableEnlaces, idAnalisis);
         selectTextoTabla(jTableTexto, idAnalisis);
         selectResumenTabla(jTableResumen, idAnalisis);
-        
+
         selectListadoResumenErroresTabla(jTableResumenErrores, idAnalisis);
-        
+
         ocultarIdAnalisis();
-        
-        
+
     }
 
     private void establecerAnchocolumnas() {
 
         //establecer ancho de las columnas
-        
         jTableUrlsAnalizadas.getColumnModel().getColumn(1).setPreferredWidth(400);
         jTableUrlsAnalizadas.getColumnModel().getColumn(2).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(3).setPreferredWidth(100);
@@ -321,7 +303,6 @@ jButtonEliminarAnalisis.setEnabled(false);
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setPreferredWidth(100);
 
-       
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(1).setPreferredWidth(700);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setPreferredWidth(150);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setPreferredWidth(100);
@@ -336,21 +317,17 @@ jButtonEliminarAnalisis.setEnabled(false);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER); // Alineación a la derecha
 
-        
         jTableUrlsAnalizadas.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadas.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadas.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadas.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadas.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-       
 
-       
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(3).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
         jTableUrlsAnalizadasSeleccionada.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
-       
 
         jTableDominios.getColumnModel().getColumn(1).setCellRenderer(rightRenderer); // Columna 0 alineada a la derecha
 
@@ -488,51 +465,50 @@ jButtonEliminarAnalisis.setEnabled(false);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(471, 471, 471)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelUrlAbajo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonEliminarAnalisis)
                 .addGap(26, 26, 26))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(39, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(25, 25, 25)
                         .addComponent(jLabelDominioSeleccionado)
-                        .addGap(0, 1060, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addComponent(jLabelAnalizando))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonAnalizar))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel5))
-                                    .addGap(26, 26, 26)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 902, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabelAnalizando))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAnalizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelAnalizando)
                 .addGap(11, 11, 11)
+                .addComponent(jLabelAnalizando)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -540,17 +516,16 @@ jButtonEliminarAnalisis.setEnabled(false);
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabelDominioSeleccionado))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEliminarAnalisis))
-                    .addComponent(jLabelUrlAbajo, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabelDominioSeleccionado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonEliminarAnalisis)
+                    .addComponent(jLabelUrlAbajo))
                 .addGap(21, 21, 21))
         );
 
@@ -826,26 +801,30 @@ jButtonEliminarAnalisis.setEnabled(false);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(247, 247, 247)
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addComponent(jLabelUrlSeleccionada)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonTemaClaro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonTemaOscuro)
                 .addGap(20, 20, 20))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonTemaClaro)
-                    .addComponent(jButtonTemaOscuro)
-                    .addComponent(jLabelUrlSeleccionada))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonTemaClaro)
+                            .addComponent(jButtonTemaOscuro)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelUrlSeleccionada)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -863,29 +842,33 @@ jButtonEliminarAnalisis.setEnabled(false);
             return false;
         }
     }
-    
-    
-    
+
+
     private void jButtonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnalizarActionPerformed
         // TODO add your handling code here:
         jButtonAnalizar.setEnabled(false);
-         String urlText = jTextFieldURL.getText();
-    
-    // Verificar si la URL es válida
-    if (!isUrlValida(urlText)) {
-        JOptionPane.showMessageDialog(this, "La URL no está bien formada. Por favor, ingrese una URL válida.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        String urlText = jTextFieldURL.getText();
+
+        // Verificar si la URL es válida
+        if (!isUrlValida(urlText) && !urlText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La URL no está bien formada. Por favor, ingrese una URL válida.\n ejemplo: https://www.dominio.com/url/", "Error", JOptionPane.ERROR_MESSAGE);
+            jButtonAnalizar.setEnabled(true);
+            return;
+        }
         
-      
-         jLabelAnalizando.setVisible(true);
+         if ( urlText.isEmpty()) {
+            jButtonAnalizar.setEnabled(true);
+            return;
+        }
+
+        jLabelAnalizando.setVisible(true);
         String url = jTextFieldURL.getText();
-        
-        jLabelAnalizando.setText("...Analizando..."+url);
-        
+
+        jLabelAnalizando.setText("...Analizando..." + url);
+
         jTextFieldURL.setText("");
-        
-          timer.start(); // Inicia el temporizador
+
+        timer.start(); // Inicia el temporizador
 
         // Crear un SwingWorker para ejecutar el análisis en segundo plano
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -907,38 +890,36 @@ jButtonEliminarAnalisis.setEnabled(false);
                 selectDominioTabla(jTableDominios);
                 selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
                 jLabelAnalizando.setVisible(false);
-                 timer.stop(); // Detiene el temporizador
-                 jButtonAnalizar.setEnabled(true);
+                timer.stop(); // Detiene el temporizador
+                jButtonAnalizar.setEnabled(true);
                 URL url1;
                 try {
                     url1 = new URL(url);
                     String dominio = url1.getHost();
-                    selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio); 
-                    
+                    selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, dominio);
+
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(inicio.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-              // Seleccionar la primera fila y darle el foco
-    if (jTableUrlsAnalizadas.getRowCount() > 0) {
-        jTableUrlsAnalizadas.setRowSelectionInterval(0, 0); // Selecciona la primera fila
-        jTableUrlsAnalizadas.requestFocus(); // Coloca el foco en la tabla
 
-        // Simula el clic en la primera fila
-        java.awt.event.MouseEvent clickEvent = new java.awt.event.MouseEvent(
-            jTableUrlsAnalizadas,
-            java.awt.event.MouseEvent.MOUSE_CLICKED,
-            System.currentTimeMillis(),
-            0,
-            0,
-            0,
-            1,
-            false
-        );
-        jTableUrlsAnalizadas.dispatchEvent(clickEvent);
-    }  
-              
-                
+                // Seleccionar la primera fila y darle el foco
+                if (jTableUrlsAnalizadas.getRowCount() > 0) {
+                    jTableUrlsAnalizadas.setRowSelectionInterval(0, 0); // Selecciona la primera fila
+                    jTableUrlsAnalizadas.requestFocus(); // Coloca el foco en la tabla
+
+                    // Simula el clic en la primera fila
+                    java.awt.event.MouseEvent clickEvent = new java.awt.event.MouseEvent(
+                            jTableUrlsAnalizadas,
+                            java.awt.event.MouseEvent.MOUSE_CLICKED,
+                            System.currentTimeMillis(),
+                            0,
+                            0,
+                            0,
+                            1,
+                            false
+                    );
+                    jTableUrlsAnalizadas.dispatchEvent(clickEvent);
+                }
 
             }
         };
@@ -967,7 +948,6 @@ jButtonEliminarAnalisis.setEnabled(false);
 
     }//GEN-LAST:event_jButtonTemaOscuroActionPerformed
 
-    
     public void aplicarTemaClaro() {
         try {
             // Cambiar al tema CLARO de macOS
@@ -994,46 +974,42 @@ jButtonEliminarAnalisis.setEnabled(false);
     }//GEN-LAST:event_jButtonTemaClaroActionPerformed
 
     public static void eliminarAnalisis(String idAnalisis) {
-    String[] tablas = {"MetaTitle", "MetaDescription", "Encabezados", "Imagenes", "Enlaces", "Texto", "Analisis"};
+        String[] tablas = {"MetaTitle", "MetaDescription", "Encabezados", "Imagenes", "Enlaces", "Texto", "Analisis"};
 
-    try (Connection conn = Consultas.connect()) {
-        for (String tabla : tablas) {
-            String sql = "DELETE FROM " + tabla + " WHERE id_analisis = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, idAnalisis);
-                pstmt.executeUpdate();
+        try (Connection conn = Consultas.connect()) {
+            for (String tabla : tablas) {
+                String sql = "DELETE FROM " + tabla + " WHERE id_analisis = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, idAnalisis);
+                    pstmt.executeUpdate();
+                }
             }
+            System.out.println("Análisis con ID " + idAnalisis + " eliminado correctamente.");
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar el análisis: " + e.getMessage());
         }
-        System.out.println("Análisis con ID " + idAnalisis + " eliminado correctamente.");
-    } catch (SQLException e) {
-        System.out.println("Error al eliminar el análisis: " + e.getMessage());
     }
-}
-    
-    
-    
+
+
     private void jButtonEliminarAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarAnalisisActionPerformed
-                // TODO add your handling code here:
-    
-       //eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
-       
+        // TODO add your handling code here:
+
+        //eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
         if (idAnalisisActual != null) { // Verifica que hay un análisis seleccionado
             eliminarAnalisis(idAnalisisActual); // Llamada al método de eliminación
             JOptionPane.showMessageDialog(this, "Análisis eliminado exitosamente.");
         } else {
             JOptionPane.showMessageDialog(this, "Selecciona un análisis para eliminar.");
         }
-        
-     
+
         selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
-         selectDominioTabla(jTableDominios);
-        
-         desactivarPestañas();
-         
-         cargaPrimerosDatos();
-         
-         
-          if (jTableDominios.getRowCount() == 0) {
+        selectDominioTabla(jTableDominios);
+
+        desactivarPestañas();
+
+        cargaPrimerosDatos();
+
+        if (jTableDominios.getRowCount() == 0) {
             // Si no quedan dominios, vacía la tabla de URLs analizadas del dominio
             DefaultTableModel model = (DefaultTableModel) jTableUrlsAnalizadasSeleccionada.getModel();
             model.setRowCount(0);
@@ -1041,7 +1017,7 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
         jButtonEliminarAnalisis.setEnabled(false);
         jLabelUrlAbajo.setText("Análisis Eliminado");
-    
+
     }//GEN-LAST:event_jButtonEliminarAnalisisActionPerformed
 
     public void selectDominioTabla(JTable jTableDominios) {
@@ -1142,7 +1118,7 @@ jButtonEliminarAnalisis.setEnabled(false);
 
             // Asignar el modelo a la tabla
             jTableUrlsAnalizadasSeleccionada.setModel(tableModel);
-  ocultarIdAnalisis();
+            ocultarIdAnalisis();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -1229,7 +1205,7 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
 
     }
-    
+
     public static void selectImagenesTabla(JTable jTableImagenes, String idAnalisis) {
 
         String sql = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "'";
@@ -1257,13 +1233,13 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
 
     }
-    
+
     public static void selectEnlacesTabla(JTable jTableEnlaces, String idAnalisis) {
 
         String sql = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO","ANCHOR TEXT", "ESTADO"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO", "ANCHOR TEXT", "ESTADO"}, 0);
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1286,13 +1262,13 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
 
     }
-    
+
     public static void selectTextoTabla(JTable jTableTexto, String idAnalisis) {
 
         String sql = "SELECT palabra,frecuencia,densidad From Texto where id_analisis ='" + idAnalisis + "'";
         System.out.println(sql);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES","DENSIDAD(%)"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES", "DENSIDAD(%)"}, 0);
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1301,7 +1277,6 @@ jButtonEliminarAnalisis.setEnabled(false);
                 String palabra = rs.getString("palabra");
                 String frecuencia = rs.getString("frecuencia");
                 String densidad = rs.getString("densidad");
-                
 
                 // Agregar una nueva fila a la tabla
                 tableModel.addRow(new Object[]{palabra, frecuencia, densidad});
@@ -1315,11 +1290,11 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
 
     }
-    
+
     public static void selectResumenTabla(JTable jTableResumen, String idAnalisis) {
 
-       String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{ "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
+        String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0);
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
@@ -1343,7 +1318,7 @@ jButtonEliminarAnalisis.setEnabled(false);
                 int erroresDescription = obtenerConteoErrores(conn, "MetaDescription", id_analisis);
 
                 // Agregar una nueva fila a la tabla
-                tableModel.addRow(new Object[]{ urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
+                tableModel.addRow(new Object[]{urlAnalizada, fechaAnalisis, erroresTitle, erroresDescription, erroresEncabezados, erroresImagenes, erroresEnlaces});
             }
 
             // Asignar el modelo a la tabla
@@ -1354,58 +1329,56 @@ jButtonEliminarAnalisis.setEnabled(false);
         }
 
     }
-    
+
     public static void selectListadoResumenErroresTabla(JTable jTableResumenErrores, String idAnalisis) {
 
-      /*  String sqlTitle = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "' where estado='Error'";
+        /*  String sqlTitle = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "' where estado='Error'";
         String sqlDescription = "SELECT meta_descripcion, estado From MetaDescription where id_analisis ='" + idAnalisis + "' where estado='Error'";
         String sqlEncabezados = "SELECT nivel,contenido, estado From Encabezados where id_analisis ='" + idAnalisis + "' where estado='Error'";
         String sqlImagenes = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "' where estado='Error'";
         String sqlEnlaces = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "' where estado='Error'";
         System.out.println(sqlTitle); */
+        String sql = "SELECT 'MetaTitle' AS origen, titulo_pagina AS detalle, 'Meta Title Vacio' AS estado "
+                + "FROM MetaTitle "
+                + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' "
+                + "UNION ALL "
+                + "SELECT 'MetaDescription' AS origen, meta_descripcion AS detalle, 'Meta Description Vacía' AS estado "
+                + "FROM MetaDescription "
+                + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' "
+                + "UNION ALL "
+                + "SELECT nivel AS origen, contenido AS detalle, informacion "
+                + "FROM Encabezados "
+                + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' "
+                + "UNION ALL "
+                + "SELECT 'Imagenes' AS origen, ruta_imagen AS detalle, 'no tiene Alt' AS estado "
+                + "FROM Imagenes "
+                + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' "
+                + "UNION ALL "
+                + "SELECT 'Enlaces' AS origen, url_enlace AS detalle, 'Enlace Roto' AS estado  "
+                + "FROM Enlaces "
+                + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
 
-        String sql = "SELECT 'MetaTitle' AS origen, titulo_pagina AS detalle, 'Meta Title Vacio' AS estado " +
-                 "FROM MetaTitle " +
-                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
-                 "UNION ALL " +
-                 "SELECT 'MetaDescription' AS origen, meta_descripcion AS detalle, 'Meta Description Vacía' AS estado " +
-                 "FROM MetaDescription " +
-                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
-                 "UNION ALL " +
-                 "SELECT nivel AS origen, contenido AS detalle, informacion " +
-                 "FROM Encabezados " +
-                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
-                 "UNION ALL " +
-                 "SELECT 'Imagenes' AS origen, ruta_imagen AS detalle, 'no tiene Alt' AS estado " +
-                 "FROM Imagenes " +
-                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' " +
-                 "UNION ALL " +
-                 "SELECT 'Enlaces' AS origen, url_enlace AS detalle, 'Enlace Roto' AS estado  " +
-                 "FROM Enlaces " +
-                 "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0);
 
-    DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0);
+        try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
+            while (rs.next()) {
+                String origen = rs.getString("origen");
+                String detalle = rs.getString("detalle");
+                String estado = rs.getString("estado");
 
-    try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-        // Iterar sobre los resultados de la consulta y agregar al modelo de tabla
-        while (rs.next()) {
-            String origen = rs.getString("origen");
-            String detalle = rs.getString("detalle");
-            String estado = rs.getString("estado");
+                // Agregar una nueva fila a la tabla
+                tableModel.addRow(new Object[]{origen, detalle, estado});
+            }
 
-            // Agregar una nueva fila a la tabla
-            tableModel.addRow(new Object[]{origen, detalle, estado});
+            // Asignar el modelo a la tabla
+            jTableResumenErrores.setModel(tableModel);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
 
-        // Asignar el modelo a la tabla
-        jTableResumenErrores.setModel(tableModel);
-
-    } catch (SQLException e) {
-        System.out.println(e.getMessage());
     }
-
-    }
-    
 
     private static int obtenerConteoErrores(Connection conn, String tabla, String id_analisis) {
         String sqlErrores = "SELECT COUNT(*) AS conteo FROM " + tabla + " WHERE id_analisis = ? AND estado = 'Error'";
