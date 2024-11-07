@@ -187,7 +187,20 @@ public class inicio extends javax.swing.JFrame {
                 establecerAnchocolumnas();
                  ocultarIdAnalisis(); // Ocultar ID
                  
-                // Seleccionar la primera fila después de cargar los datos
+                
+                 cargaPrimerosDatos();
+                 
+                 
+                 
+                 
+                 
+            }
+        });
+
+    }
+    
+    private void cargaPrimerosDatos(){
+        // Seleccionar la primera fila después de cargar los datos
                 if (jTableUrlsAnalizadas.getRowCount() > 0) {
                     jTableUrlsAnalizadas.setRowSelectionInterval(0, 0);
                     String idAnalisis = jTableUrlsAnalizadas.getValueAt(0, 0).toString();
@@ -206,15 +219,8 @@ public class inicio extends javax.swing.JFrame {
                    
                    
                 }
-                 
-                 
-                 
-                 
-                 
-                 
-            }
-        });
-
+    
+    
     }
     
     private void ocultarIdAnalisis() {
@@ -881,8 +887,8 @@ public class inicio extends javax.swing.JFrame {
          selectDominioTabla(jTableDominios);
         selectUrlsAnalizadasTabla(jTableUrlsAnalizadas);
         
-         selectUrlsAnalizadasTablaSeleccionada(jTableUrlsAnalizadasSeleccionada, "");
-                
+         
+     cargaPrimerosDatos();
                
             
             
