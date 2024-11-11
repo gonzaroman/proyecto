@@ -56,6 +56,8 @@ public class inicio extends javax.swing.JFrame {
     public inicio() {
         initComponents();
         aplicarTemaClaro();
+        setLocationRelativeTo(null); // Centra la ventana en la pantalla
+
         jLabelAnalizando.setVisible(false);
 
         desactivarReordenarColumnas();
@@ -63,11 +65,11 @@ public class inicio extends javax.swing.JFrame {
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
         initialModel = new DefaultTableModel(
                 new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         jTableUrlsAnalizadas.setModel(initialModel);
@@ -1070,11 +1072,11 @@ public class inicio extends javax.swing.JFrame {
                 + "ORDER BY ultima_fecha DESC";
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"DOMINIO", "CANTIDAD ANALISIS"}, 0) {
-            @Override
+          /*  @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1100,11 +1102,11 @@ public class inicio extends javax.swing.JFrame {
     public void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
         String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-            @Override
+         /*   @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1144,11 +1146,11 @@ public class inicio extends javax.swing.JFrame {
     public void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '" + dominio + "' ORDER BY fecha_analisis DESC ";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1190,11 +1192,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META TITLE", "ESTADO"}, 0) {
-            @Override
+         /*   @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1223,11 +1225,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"META DESCRIPTION", "ESTADO"}, 0) {
-            @Override
+         /*   @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1256,11 +1258,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"NIVEL", "CONTENIDO", "ESTADO"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1290,11 +1292,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"RUTA IMAGEN", "ALT", "ESTADO"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1324,11 +1326,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO", "ANCHOR TEXT", "ESTADO"}, 0) {
-            @Override
+          /*  @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1359,11 +1361,11 @@ public class inicio extends javax.swing.JFrame {
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES", "DENSIDAD(%)"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1391,11 +1393,11 @@ public class inicio extends javax.swing.JFrame {
 
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1461,11 +1463,11 @@ public class inicio extends javax.swing.JFrame {
                 + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0) {
-            @Override
+           /* @Override
             public boolean isCellEditable(int row, int column) {
                 // Deshabilita la edición para todas las celdas
                 return false;
-            }
+            }*/
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
