@@ -1,0 +1,3 @@
+##Como instalar##
+
+Para instalar el programa hay que hacer clic derecho en instalar.exe y ejecutar como Administrador.

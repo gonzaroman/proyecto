@@ -1,0 +1,5 @@
+##Como instalar##
+
+Para instalar el programa hay que hacer clic derecho en instalar.exe y ejecutar como Administrador.
+
+Para ejecutar el programa sin Instalarlo en el pc puedes utilizar analizadorseo.exe
