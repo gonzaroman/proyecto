@@ -3,8 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarEncabezados.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarEstadoUrl.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/ComprobarEncabezados.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarEnlaces.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/ComprobarDescription.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarMetaDescription.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarMetaTitle.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarAnalisis.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarTexto.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/Ejecutar.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarImagenes.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/ComprobarEstructura.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/ComprobarTexto.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/ConexionBaseDatos.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/baseDatos/InsertarEnlacesResumen.java</file>
             <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/interfaz/inicio.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/ComprobarEnlaces.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/interfaz/Consultas.java</file>
             <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/interfaz/AnchoColumnas.java</file>
+            <file>file:/C:/Users/6003262/Documents/NetBeansProjects/proyectoGonzalo/proyecto/proyectoGonzalo/src/proyecto/PedirUrl.java</file>
         </group>
     </open-files>
 </project-private>

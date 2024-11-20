@@ -1,0 +1,12 @@
+esta carpeta permite ejecutar el programa en Linux y MAC. 
+para ello simplemente ejecutar el archivo .jar haciendo doble clic o bien desde la consola:
+
+Ir a la carpeta donde está el .jar
+
+en la consola:
+
+java -jar proyectoGonzalo.jar 
+
+o bien:
+
+java -jar "proyectoGonzalo.jar" 
