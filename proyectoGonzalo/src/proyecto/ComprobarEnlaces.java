@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
 
 import baseDatos.InsertarEnlaces;
@@ -16,180 +12,157 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- *
- * @author gonzaloromanmarquez
+ * Clase para comprobar los enlaces de una página web.
+ * Utiliza Jsoup para analizar el HTML y verifica el estado de cada enlace.
+ * Autor: Gonzalo Román Márquez
  */
 public class ComprobarEnlaces {
 
-    String url;
-    String dominio_y_protocolo;
-    String idAnalisis;
-    String url_enlace, tipo, anchor_text, estadoResumen;
-    String estado = "Correcto";
+    // Atributos
+    String url;                     // URL de la página web a analizar
+    String dominio_y_protocolo;     // Dominio y protocolo base (ejemplo: https://www.ejemplo.com)
+    String idAnalisis;              // ID del análisis actual para la base de datos
+    String url_enlace, tipo, anchor_text, estadoResumen; // Variables para el enlace actual
+    String estado = "Correcto";     // Estado inicial
 
-    public String getUrl() {
-        return url;
-    }
+    // Contadores para diferentes tipos de enlaces
+    int internalLinks = 0, externalLinks = 0, relativeLinks = 0, enlacesRotos = 0, enlacesCorrectos = 0;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+    // Colores para mensajes en consola
+    String rojo = "\u001B[31m"; // Color rojo
+    String verde = "\u001B[32m"; // Color verde
 
-    public String getDominio_y_protocolo() {
-        return dominio_y_protocolo;
-    }
-
-    public void setDominio_y_protocolo(String dominio_y_protocolo) {
-        this.dominio_y_protocolo = dominio_y_protocolo;
-    }
-
-   
+    // Constructor
     public ComprobarEnlaces(String url, String dominio_y_protocolo, String idAnalisis) {
         this.url = url;
         this.dominio_y_protocolo = dominio_y_protocolo;
         this.idAnalisis = idAnalisis;
     }
 
-    int internalLinks = 0, externalLinks = 0, relativeLinks = 0, enlacesRotos = 0, enlacesCorrectos = 0;
-
-    String rojo = "\u001B[31m"; //color rojo del mensaje en consola
-    String verde = "\u001B[32m"; //color rojo del mensaje en consola
-
+    /**
+     * Método principal para comprobar enlaces.
+     * - Descarga el contenido HTML de la URL.
+     * - Identifica todos los enlaces (<a href>).
+     * - Verifica el estado de cada enlace.
+     */
     public void comprobar() throws InterruptedException {
+        // Pool de hilos para procesar enlaces en paralelo
+        ExecutorService executor = Executors.newFixedThreadPool(10);
 
-        ExecutorService executor = Executors.newFixedThreadPool(10); // Limitar a 10 hilos simultáneos
-     //   ExecutorService executor = Executors.newFixedThreadPool(Math.min(10, links.size())); // Limitar el tamaño al número de enlaces o 10, lo que sea menor
-
-
-        //devuelve true si la url está correcta, si es un 404 da error
-        // Cantidad de enlaces internos y externos
         try {
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").timeout(5000).get();
-            //.get();
-            Elements links = doc.select("a[href]");
+            // Descargar y analizar la página HTML
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                    .timeout(5000).get();
 
+            Elements links = doc.select("a[href]"); // Seleccionar todos los enlaces
+
+            // Procesar cada enlace
             for (Element link : links) {
                 String href = link.attr("href");
 
-                // Filtrar enlaces no HTTP/HTTPS
+                // Ignorar enlaces no válidos (tel:, mailto:)
                 if (href.startsWith("tel:") || href.startsWith("mailto:")) {
                     System.out.println("ENLACE NO VÁLIDO: " + href);
-                    continue; // Saltar estos enlaces
+                    continue;
                 }
 
-                // Crear una tarea para cada enlace
+                // Crear una tarea para procesar el enlace
                 executor.submit(() -> {
                     try {
-                        verificarEnlace(href, link);
+                        verificarEnlace(href, link); // Verificar el enlace
                     } catch (IOException e) {
                         System.out.println("Error al verificar enlace: " + href);
                     }
                 });
-
-            }//fin del for
+            }
 
             executor.shutdown(); // No aceptar más tareas
-            executor.awaitTermination(10, TimeUnit.SECONDS); // Esperar hasta que todas las tareas finalice
+            executor.awaitTermination(10, TimeUnit.SECONDS); // Esperar la finalización de todas las tareas
 
+            // Imprimir resultados finales
             System.out.println("Enlaces internos: " + internalLinks);
             System.out.println("Enlaces externos: " + externalLinks);
             System.out.println("Enlaces internos relativos: " + relativeLinks);
-            System.out.println("Enlaces apuntan a url rota: " + enlacesRotos);
-            System.out.println("Enlaces apuntan url correcta: " + enlacesCorrectos);
-            
-            if(enlacesRotos>0){
+            System.out.println("Enlaces rotos: " + enlacesRotos);
+            System.out.println("Enlaces correctos: " + enlacesCorrectos);
+
+            // Determinar estado general
+            if (enlacesRotos > 0) {
                 estadoResumen = "Error";
             }
 
-            InsertarEnlacesResumen.insertaEnlacesResumen(idAnalisis, internalLinks + "", externalLinks + "", enlacesRotos + "", estadoResumen);
+            // Insertar resumen en la base de datos
+            InsertarEnlacesResumen.insertaEnlacesResumen(idAnalisis, String.valueOf(internalLinks),
+                    String.valueOf(externalLinks), String.valueOf(enlacesRotos), estadoResumen);
 
-        } catch (IOException iOException) {
-
-            System.out.println("algun enlace raro");
+        } catch (IOException e) {
+            System.out.println("Error al procesar la página: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Verifica el estado de un enlace específico.
+     *
+     * @param href URL del enlace.
+     * @param link Elemento del enlace (<a>).
+     */
     private void verificarEnlace(String href, Element link) throws IOException {
-       
         if (href.isEmpty()) {
             System.out.println("Enlace vacío ignorado.");
             return;
         }
-    
-         // Ajustar enlace raíz para que sea una URL completa si es "/"
-    if ("/".equals(href)) {
-        href = dominio_y_protocolo + href; // Construir URL completa para la raíz
-        internalLinks++;
-            System.out.println("INTERNO:");
-            tipo = "INTERNO";
-            System.out.println(href);
-            url_enlace = href;
-            System.out.println("Anchor text: " + link.text());
-            anchor_text = link.text();
-            estado = compruebaRoto(href);
-    }
-        
-        if (href.startsWith(dominio_y_protocolo) && !href.startsWith("#")) {
-            internalLinks++;
-            System.out.println("INTERNO:");
-            tipo = "INTERNO";
-            System.out.println(href);
-            url_enlace = href;
-            System.out.println("Anchor text: " + link.text());
-            anchor_text = link.text();
-            estado = compruebaRoto(href);
 
+        // Ajustar enlaces relativos y categorizarlos
+        if ("/".equals(href)) {
+            href = dominio_y_protocolo + href;
+            internalLinks++;
+            tipo = "INTERNO";
+            url_enlace = href;
+            anchor_text = link.text();
+            estado = compruebaRoto(href);
+        } else if (href.startsWith(dominio_y_protocolo) && !href.startsWith("#")) {
+            internalLinks++;
+            tipo = "INTERNO";
+            url_enlace = href;
+            anchor_text = link.text();
+            estado = compruebaRoto(href);
         } else if (href.startsWith("http") && !href.startsWith("#") && !href.startsWith(dominio_y_protocolo)) {
             externalLinks++;
-
-            System.out.println("EXTERNO");
             tipo = "EXTERNO";
-            System.out.println(href);
             url_enlace = href;
-            System.out.println("Anchor text: " + link.text());
             anchor_text = link.text();
             estado = compruebaRoto(href);
-
         } else if (!href.startsWith("http") && !href.startsWith("#") && !href.startsWith(dominio_y_protocolo)) {
-            System.out.println("INTERNO/RELATIVO");
-            System.out.println(href);
-            //  System.out.println("prueba print dominio: "+dominio_y_protocolo);
-            if (!href.startsWith("/")) {
-                href = "/" + href;
-            }
-            System.out.println("ruta completa: " + dominio_y_protocolo + href);
-            System.out.println("Anchor text: " + link.text());
             relativeLinks++;
             internalLinks++;
-
             tipo = "INTERNO";
             url_enlace = dominio_y_protocolo + href;
             anchor_text = link.text();
-
             estado = compruebaRoto(dominio_y_protocolo + href);
-
         }
 
+        // Insertar información del enlace en la base de datos
         InsertarEnlaces.insertaEnlaces(idAnalisis, url_enlace, tipo, anchor_text, estado);
     }
 
+    /**
+     * Comprueba si un enlace está roto.
+     *
+     * @param href URL del enlace.
+     * @return "Correcto" si el enlace es válido, "Error" si está roto.
+     */
     public String compruebaRoto(String href) {
         ComprobarEstado estadoURL = new ComprobarEstado(href);
-
-        System.out.println(estadoURL.comprobar());
-        // estadoURL.devolverCodigoEstado();
 
         if (!estadoURL.comprobar()) {
             enlacesRotos++;
             System.out.println(rojo + "INCORRECTO: " + estadoURL.devolverCodigoEstado());
             return "Error";
         } else {
-            System.out.println(verde + "CORRECTO: " + estadoURL.devolverCodigoEstado());
             enlacesCorrectos++;
+            System.out.println(verde + "CORRECTO: " + estadoURL.devolverCodigoEstado());
             return "Correcto";
         }
-
     }
-
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
 
 import baseDatos.ConexionBaseDatos;
@@ -15,116 +11,94 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author 6003262
+ * Clase principal encargada de ejecutar el análisis completo de una URL.
+ * Realiza verificaciones de estado, metaetiquetas, encabezados, imágenes, enlaces y texto.
  */
 public class Ejecutar {
 
-    // String url ="";
+    /**
+     * Método principal para ejecutar el análisis completo de una URL.
+     *
+     * @param url la URL que será analizada
+     * @return true si la URL es válida y se realiza el análisis correctamente, false si la URL no es válida o ocurre un error
+     * @throws MalformedURLException si la URL no tiene un formato válido
+     */
     public static boolean hacer(String url) throws MalformedURLException {
 
-        //String url ="";
-        String dominio = "";
-        // TODO code application logic here
+        String dominio = ""; // Dominio extraído de la URL
+        String rojo = "\u001B[31m"; // Color rojo para mensajes de error en la consola
+        String verde = "\u001B[32m"; // Color verde para mensajes de éxito en la consola
 
-        String rojo = "\u001B[31m"; //color rojo del mensaje en consola
-        String verde = "\u001B[32m"; //color rojo del mensaje en consola
-        //conexion base de datos
-
+        // Crear y verificar la conexión a la base de datos
         ConexionBaseDatos.createNewTable();
 
-        //PIDE URL POR TECLADO
-        // PedirUrl teclado = new PedirUrl();
-        // url = teclado.escribir();
+        // Procesar la URL ingresada
         URL url1 = new URL(url);
-        dominio = url1.getHost();
+        dominio = url1.getHost(); // Extraer el dominio de la URL
         System.out.println("dominio: " + dominio);
-        System.out.println(url1.getProtocol());
-        String protocolo = url1.getProtocol();
 
-        String dominio_y_protocolo = protocolo + "://" + dominio;
+        String protocolo = url1.getProtocol(); // Obtener el protocolo (http/https)
+        System.out.println("protocolo: " + protocolo);
+
+        String dominio_y_protocolo = protocolo + "://" + dominio; // Construir el dominio completo con protocolo
         System.out.println("dominio y protocolo: " + dominio_y_protocolo);
 
+        // Verificar el estado HTTP de la URL
         ComprobarEstado estadoURL = new ComprobarEstado(url);
+        estadoURL.comprobar(); // Comprueba si la URL responde correctamente
+        String codigoEstado = estadoURL.devolverCodigoEstado() + ""; // Obtener el código HTTP (ej. 200, 404)
 
-        estadoURL.comprobar(); //devuelve true si la url está correcta, si es un 404 da error
-        String codigoEstado = estadoURL.devolverCodigoEstado() + ""; //devuelve el codigo del estado, 200, 404
+        System.out.println("devuelve código estado: " + estadoURL.devolverCodigoEstado());
+        System.out.println("devuelve mensaje: " + estadoURL.devolverMensaje());
 
-        estadoURL.devolverMensaje(); //devuelve mensaje "OK"
-
-        System.out.println("devuelve codigo estado " + estadoURL.devolverCodigoEstado());
-        System.out.println("devuelve mensaje " + estadoURL.devolverMensaje());
-
+        // Si la URL responde correctamente
         if (estadoURL.comprobar()) {
-            System.out.println(verde + "Conexión correcta: 200 ok");
+            System.out.println(verde + "Conexión correcta: 200 OK");
 
-            //insertaAnalisis(String url_principal, String dominio, String protocolo, String dominio_y_protocolo, String estado_general)
-            //aqui lo que hacemos en generar el analisis y guardamos en id_analsis el id que se ha generado, para poderlo utilizar como clave foranea en las demas consultas
-            //hemos recuperado el codigo en una consulta en insetar analisis y lo devolvemos con un return, ya que es necesario para las demas tablas
+            // Insertar un nuevo análisis en la base de datos y obtener el ID generado
             int id_analisis = InsertarAnalisis.insertaAnalisis(url, dominio, protocolo, dominio_y_protocolo, "Correcto");
+            String idAnalisis = String.valueOf(id_analisis); // Convertir el ID a String para uso en las claves foráneas
 
-            //insertaEstadoUrl(String id_analisis, String estado_http, String mensaje_estado, String estado)
-            // InsertarEstadoUrl.insertaEstadoUrl(1,estadoURL.devolverCodigoEstado() , estadoURL.devolverMensaje(),estadoURL.devolverMensaje() );
-            String idAnalisis = id_analisis + "";//convertimos el id del analisis en string para poderlo enviar en la consulta como clave foranea.
-
+            // Guardar el estado HTTP de la URL en la base de datos
             InsertarEstadoUrl.insertaEstadoUrl(idAnalisis, codigoEstado, estadoURL.devolverMensaje(), "Correcto");
 
-            //Comprobar Meta Title
+            // Analizar y guardar el meta title
             ComprobarTitle title = new ComprobarTitle(url);
-            title.comprobar();
-            //  title.getTitle();
-            //  title.getEstado_title();
-
-            //insertar Datos Meta Title en BD
+            title.comprobar(); // Realiza el análisis del título
             InsertarMetaTitle.insertaMetaTitleUrl(idAnalisis, title.getTitle(), title.getEstado_title());
 
-            //Comprobar Meta Description
+            // Analizar y guardar la meta description
             ComprobarDescription description = new ComprobarDescription(url);
-            description.comprobar();
-
-            //Insertar Meta Title en BD
+            description.comprobar(); // Realiza el análisis de la descripción
             InsertarMetaDescription.insertaMetaDescription(idAnalisis, description.getDescription(), description.getEstadoDescription());
 
-            //Insertar Estructura de Hs en BD
-            //Creamos la comprobacion de encabezados y llamamos a clase InsertarEncabezados desde el metodo comprobar, puesto que los va recorriendo
+            // Analizar y guardar los encabezados
             ComprobarEncabezados encabezados = new ComprobarEncabezados(url, idAnalisis);
-            encabezados.comprobar();
+            encabezados.comprobar(); // Realiza el análisis de encabezados (H1, H2, etc.)
 
-            /*  
-         ComprobarEstructura EstructuraURL = new ComprobarEstructura(url);
-         EstructuraURL.comprobar();
-             */
+            // Analizar y guardar las imágenes
             ComprobarImagenes imagenesURL = new ComprobarImagenes(url, idAnalisis);
             imagenesURL.comprobar();
 
+            // Analizar y guardar los enlaces
             ComprobarEnlaces enlaces = new ComprobarEnlaces(url, dominio_y_protocolo, idAnalisis);
-
             try {
                 enlaces.comprobar();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Ejecutar.class.getName()).log(Level.SEVERE, null, ex);
             }
-            // Dentro del evento que llama a ComprobarEnlaces, crear un nuevo hilo para acelerar el analisis
-            /*new Thread(() -> {
-                 try {
-                     enlaces.comprobar();
-                 } catch (InterruptedException ex) {
-                     Logger.getLogger(Ejecutar.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-             }).start();*/
 
+            // Analizar y guardar el texto y su densidad
             ComprobarTexto texto = new ComprobarTexto(url, idAnalisis);
-            //  texto.comprobar();
             texto.calcularDensidad();
 
-            //System.out.println(doc.html());
-            
+            // Retorna true si el análisis se realizó correctamente
             return true;
+
         } else {
-            System.out.println(rojo + "Error: url no encontrada: 404");
-            //Este error debe guardarse en base de datos
+            // Si la URL no responde correctamente (ej. 404), mostrar mensaje de error
+            System.out.println(rojo + "Error: URL no encontrada: 404");
             return false;
         }
     }
-
 }

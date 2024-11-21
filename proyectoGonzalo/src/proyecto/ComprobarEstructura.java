@@ -1,134 +1,112 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
 
 import java.io.IOException;
-import java.lang.System.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- *
- * @author gonzaloromanmarquez
+ * Clase para comprobar la estructura básica de una página web.
+ * Analiza elementos clave como el título, meta descripción y encabezados (H1, H2, H3, H4).
  */
 public class ComprobarEstructura {
-    String url;
-    
-     String rojo = "\u001B[31m"; //color rojo del mensaje en consola
-    String verde = "\u001B[32m"; //color rojo del mensaje en consola
+    // Atributos principales
+    String url; // URL que se analizará
 
-        public String getUrl() {
-            return url;
-        }
+    // Colores para mensajes en consola
+    String rojo = "\u001B[31m"; // Mensaje en rojo para errores
+    String verde = "\u001B[32m"; // Mensaje en verde para resultados correctos
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
+    // Métodos getters y setters
+    public String getUrl() {
+        return url;
+    }
 
-        public ComprobarEstructura(String url) {
-            this.url = url;
-        }
-    
-    public void comprobar(){     
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
+    // Constructor para inicializar el objeto con una URL específica
+    public ComprobarEstructura(String url) {
+        this.url = url;
+    }
 
-
-
-
-try {
-            
+    /**
+     * Método principal para analizar la estructura de la página web.
+     * Comprueba el título, la meta descripción y la jerarquía de encabezados.
+     */
+    public void comprobar() {
+        try {
             // Descargar y analizar el HTML de la página web
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
-       // .get();
-            
-            
-            //control analisis H1
-            
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                    .get();
+
+            // Comprobar el título de la página
             String title = doc.title();
-            
-            if (title.isEmpty()){
-                System.out.println("titulo correcto");
-            }else{
-                 System.out.println("Título de la página: \n" + title);
+            if (title.isEmpty()) {
+                System.out.println(rojo + "Error: El título de la página está vacío.");
+            } else {
+                System.out.println(verde + "Título de la página: " + title);
             }
-             
-            
-           
-           
-           
+
+            // Comprobar la meta descripción
             Element metaDescription = doc.selectFirst("meta[name=description]");
             String description = (metaDescription != null) ? metaDescription.attr("content") : "No tiene meta descripción";
+            System.out.println("Meta Descripción: " + description);
 
-            System.out.println("Meta Descripion: "+description);
-            
-            
-            
-            
-           String currentH1 = null;
-           
-           Elements h1Elements = doc.select("h1");
+            // Comprobar los encabezados H1
+            String currentH1 = null; // Variable para almacenar el texto del H1 actual
+            Elements h1Elements = doc.select("h1"); // Seleccionar todos los elementos H1
             if (h1Elements.isEmpty()) {
-                System.out.println(rojo+"¡¡ERROR!! No se encontraron encabezados H1 en la página.");
+                System.out.println(rojo + "¡¡ERROR!! No se encontraron encabezados H1 en la página.");
             } else {
                 System.out.println("\nEncabezados H1:");
                 for (Element h1 : h1Elements) {
-                    if (h1.text().length()==0){
-                        System.out.println(rojo+"ERROR h1 está vacío");
-                    }else{
-                        System.out.println(verde+"Correcto");
+                    if (h1.text().length() == 0) {
+                        System.out.println(rojo + "ERROR: El encabezado H1 está vacío.");
+                    } else {
+                        System.out.println(verde + "Correcto: " + h1.text());
                     }
-                    System.out.println("-->" + h1.text());
-                    currentH1 = h1.text();
+                    currentH1 = h1.text(); // Guardar el texto del último H1 encontrado
                 }
             }
-            
-          
-           
-           // Seleccionamos todos los encabezados H2, H3 y H4
-            Elements headers = doc.select("h2, h3, h4");
 
-            // Variable para seguir el contexto del último H2
-            String currentH2 = null;
-            
+            // Comprobar la jerarquía de encabezados (H2, H3, H4)
+            Elements headers = doc.select("h2, h3, h4"); // Seleccionar H2, H3 y H4
+            String currentH2 = null; // Variable para almacenar el texto del H2 actual
 
             for (Element header : headers) {
-                // Si encontramos un H2, lo guardamos como el encabezado actual
-           
-                
-                if (header.tagName().equals("h2") ) {
+                // Comprobar encabezados H2
+                if (header.tagName().equals("h2")) {
                     System.out.println("   H2: " + header.text());
-                    currentH2 = header.text();
-                    if(currentH1 != null){
-                        System.out.println(verde+"correcto");
-                    }else{
-                        System.out.println(rojo+"!!ERROR!!");
+                    currentH2 = header.text(); // Guardar el texto del último H2 encontrado
+                    if (currentH1 != null) {
+                        System.out.println(verde + "Correcto: El H2 sigue a un H1.");
+                    } else {
+                        System.out.println(rojo + "¡¡ERROR!! El H2 no está precedido por un H1.");
                     }
                 }
-                // Si encontramos un H3, lo mostramos como hijo del H2 actual
-                else if (header.tagName().equals("h3") ) {
+                // Comprobar encabezados H3
+                else if (header.tagName().equals("h3")) {
                     System.out.println("           H3: " + header.text());
-                    if(currentH2 != null){
-                        System.out.println("        "+verde+"correcto");
-                    }else{
-                        System.out.println("        "+rojo+"!!ERROR!!");
+                    if (currentH2 != null) {
+                        System.out.println(verde + "Correcto: El H3 sigue a un H2.");
+                    } else {
+                        System.out.println(rojo + "¡¡ERROR!! El H3 no está precedido por un H2.");
                     }
-                } 
-                // Si encontramos un H4, lo mostramos como hijo del último H3
-                else if (header.tagName().equals("h4") ) {
+                }
+                // Comprobar encabezados H4
+                else if (header.tagName().equals("h4")) {
                     System.out.println("      H4: " + header.text());
+                    // En este caso, no se valida la jerarquía de H4
                 }
             }
-    
+
         } catch (IOException ex) {
-            System.out.println("se ha producido un error en la clase comprobarEstructura");
+            // Manejo de errores al intentar analizar la página
+            System.out.println(rojo + "Se ha producido un error en la clase ComprobarEstructura: " + ex.getMessage());
         }
-
-
     }
-    
-    
 }

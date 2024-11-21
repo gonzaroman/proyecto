@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
 
 import baseDatos.InsertarEncabezados;
@@ -12,14 +8,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- *
- * @author gonzaloromanmarquez
+ * Clase para comprobar la estructura de encabezados (H1, H2, H3, H4) de una página web.
+ * Utiliza Jsoup para analizar el HTML de una URL específica.
+ * Autor: Gonzalo Román Márquez
  */
 public class ComprobarEncabezados {
-     String url;
-     String idAnalisis;
-     String nivel,contenido,estado,informacion;
+    // Atributos de la clase
+    String url;           // URL de la página a analizar
+    String idAnalisis;    // ID del análisis para relacionar los datos en la base de datos
+    String nivel;         // Nivel del encabezado (H1, H2, H3, H4)
+    String contenido;     // Contenido del encabezado
+    String estado;        // Estado del encabezado (Correcto/Error)
+    String informacion;   // Información adicional sobre el estado del encabezado
 
+    // Getters y setters para los atributos
     public String getUrl() {
         return url;
     }
@@ -36,128 +38,116 @@ public class ComprobarEncabezados {
         this.idAnalisis = idAnalisis;
     }
 
+    /**
+     * Constructor que inicializa la clase con la URL a analizar y el ID del análisis.
+     * 
+     * @param url URL de la página web.
+     * @param idAnalisis ID del análisis asociado.
+     */
     public ComprobarEncabezados(String url, String idAnalisis) {
         this.url = url;
         this.idAnalisis = idAnalisis;
     }
-     
-    
-     
-     public void comprobar(){  
-        
-          try {
 
-            // Descargar y analizar el HTML de la página web
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
-                   // .get();
+    /**
+     * Método para comprobar los encabezados (H1, H2, H3, H4) de la página web.
+     * - Descarga el HTML de la URL especificada.
+     * - Verifica la presencia y la estructura de los encabezados.
+     * - Inserta los resultados en la base de datos.
+     */
+    public void comprobar() {
+        try {
+            // Conecta a la URL y descarga el contenido HTML
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                    .get();
 
-            //control analisis H1
+            // Comprobar encabezados H1
             String currentH1 = null;
-           
-           Elements h1Elements = doc.select("h1");
+            Elements h1Elements = doc.select("h1");
             if (h1Elements.isEmpty()) {
+                // No se encontró ningún H1
                 System.out.println("¡¡ERROR!! No se encontraron encabezados H1 en la página.");
-                estado="Error";
-                contenido="No se encontraron encabezados H1";
+                estado = "Error";
+                contenido = "No se encontraron encabezados H1";
                 informacion = "No se encontró el H1";
-                InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado,informacion);
+                InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado, informacion);
             } else {
+                // Procesar cada H1 encontrado
                 System.out.println("Encabezados H1:");
                 for (Element h1 : h1Elements) {
-                    if (h1.text().length()==0){
-                        System.out.println("ERROR h1 está vacío");
+                    if (h1.text().isEmpty()) {
+                        // H1 vacío
+                        System.out.println("ERROR: H1 está vacío");
                         contenido = "H1 vacío";
                         estado = "Error";
                         informacion = "El H1 está vacío";
-                    }else{
+                    } else {
+                        // H1 correcto
                         System.out.println("Correcto");
                         contenido = h1.text();
                         estado = "Correcto";
-                        informacion = " H1 correcto";
+                        informacion = "H1 correcto";
                     }
-                    System.out.println("-->" + h1.text());
+                    System.out.println("--> " + h1.text());
                     currentH1 = h1.text();
-                    InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado,informacion);
+                    InsertarEncabezados.insertaEncabezados(idAnalisis, "H1", contenido, estado, informacion);
                 }
             }
-            
-            
-            
-             // Seleccionamos todos los encabezados H2, H3 y H4
-            Elements headers = doc.select("h2, h3, h4");
 
-            // Variable para seguir el contexto del último H2
-            String currentH2 = null;
-            String currentH3 = null;
-            String currentH4 = null;
+            // Comprobar encabezados H2, H3, H4
+            Elements headers = doc.select("h2, h3, h4");
+            String currentH2 = null; // Último H2 procesado
+            String currentH3 = null; // Último H3 procesado
+            String currentH4 = null; // Último H4 procesado
 
             for (Element header : headers) {
-                // Si encontramos un H2, lo guardamos como el encabezado actual
-           
-                
-                if (header.tagName().equals("h2") ) {
-                    System.out.println("   H2: " + header.text());
+                if (header.tagName().equals("h2")) {
+                    // Procesar H2
+                    System.out.println("H2: " + header.text());
                     currentH2 = header.text();
                     nivel = "H2";
                     contenido = currentH2;
-                    if(currentH1 != null){
-                        System.out.println("Correcto");
+                    if (currentH1 != null) {
                         estado = "Correcto";
-                        informacion = "estructura h2 Correcto";
-                    }else{
-                        System.out.println("!!ERROR!!");
+                        informacion = "Estructura H2 correcta";
+                    } else {
                         estado = "Error";
                         informacion = "El H2 no es hijo de un H1";
                     }
-                }
-                // Si encontramos un H3, lo mostramos como hijo del H2 actual
-                else if (header.tagName().equals("h3") ) {
-                    System.out.println("           H3: " + header.text());
+                } else if (header.tagName().equals("h3")) {
+                    // Procesar H3
+                    System.out.println("H3: " + header.text());
                     currentH3 = header.text();
                     nivel = "H3";
                     contenido = currentH3;
-                    
-                    if(currentH2 != null){
-                        System.out.println("        Correcto");
-                         estado = "Correcto";
-                         informacion = "estructura h3 Correcto";
-                    }else{
-                        System.out.println("        !!ERROR!!");
+                    if (currentH2 != null) {
+                        estado = "Correcto";
+                        informacion = "Estructura H3 correcta";
+                    } else {
                         estado = "Error";
                         informacion = "El H3 no es hijo de un H2";
                     }
-                } 
-                // Si encontramos un H4, lo mostramos como hijo del último H3
-                else if (header.tagName().equals("h4") ) {
-                    System.out.println("      H4: " + header.text());
-                    
+                } else if (header.tagName().equals("h4")) {
+                    // Procesar H4
+                    System.out.println("H4: " + header.text());
                     currentH4 = header.text();
                     nivel = "H4";
                     contenido = currentH4;
-                    
-                    if(currentH3 != null){
-                        System.out.println("        Correcto");
-                         estado = "Correcto";
-                         informacion = "estructura h4 Correcto";
-                    }else{
-                        System.out.println("        !!ERROR!!");
+                    if (currentH3 != null) {
+                        estado = "Correcto";
+                        informacion = "Estructura H4 correcta";
+                    } else {
                         estado = "Error";
                         informacion = "El H4 no es hijo de un H3";
                     }
-                    
-                    
-                    
                 }
-                
-                InsertarEncabezados.insertaEncabezados(idAnalisis, nivel, contenido, estado,informacion);
+                // Insertar el encabezado en la base de datos
+                InsertarEncabezados.insertaEncabezados(idAnalisis, nivel, contenido, estado, informacion);
             }
-            
-           
-            
-            
-        } catch (IOException iOException) {
-              System.out.println("Errror al comprobar la Description");
+        } catch (IOException e) {
+            // Manejo de errores al intentar conectar con la URL
+            System.out.println("Error al comprobar los encabezados: " + e.getMessage());
         }
-    
-    } 
+    }
 }

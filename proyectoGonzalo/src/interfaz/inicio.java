@@ -66,31 +66,18 @@ public class inicio extends javax.swing.JFrame {
         // Asigna un modelo vacío con encabezados personalizados desde el inicio
         initialModel = new DefaultTableModel(
                 new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+           
         };
 
         jTableUrlsAnalizadas.setModel(initialModel);
         jTableUrlsAnalizadasSeleccionada.setModel(initialModel);
         establecerAnchocolumnas();
 
-        // Inicializar el JTabbedPane desactivando todas las pestañas
-        /* for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
-            jTabbedPane1.setEnabledAt(i, false);
-        }*/
         desactivarPestañas();
         ocultarIdAnalisis();
         
         jLabelLogo.setText("");
-      /* ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/logo.jpg"));
-//Image scaledImage = icon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-jLabelLogo.setIcon(new ImageIcon(icono));*/
-      
-      
-
+        
 
         // Configurar el Timer para el efecto de parpadeo
         timer = new Timer(500, e -> {
@@ -177,8 +164,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
                     jLabelUrlSeleccionada.setText(fecha + " " + urlSeleccionada);
                     jLabelUrlAbajo.setText(fecha + " " + urlSeleccionada);
 
-                    /*selectMetaTitleTabla(jTableTitle,idAnalisis);
-                     selectMetaDescriptionTabla(jTableDescription,idAnalisis);*/
+                   
                     rellenaLabels(idAnalisis);
                     jButtonEliminarAnalisis.setEnabled(true);//desactivamos el boton eliminar
 
@@ -991,7 +977,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
 
                     if (!resultado) {
                         //Mensaje de pagina no encontrada o rota
-                        // Mensaje de página no encontrada o rota
+                       
                         JOptionPane.showMessageDialog(
                                 inicio.this,
                                 "Error: La URL \n" + url + " \n no se encuentra o está rota.",
@@ -1189,11 +1175,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
     public void selectUrlsAnalizadasTabla(JTable jTableUrlsAnalizadas) {
         String sql = "SELECT id_analisis, url_principal, fecha_analisis FROM Analisis ORDER BY fecha_analisis DESC";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-         /*   @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+        
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1233,11 +1215,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
     public void selectUrlsAnalizadasTablaSeleccionada(JTable jTableUrlsAnalizadasSeleccionada, String dominio) {
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where dominio = '" + dominio + "' ORDER BY fecha_analisis DESC ";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+           
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1345,11 +1323,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"NIVEL", "CONTENIDO", "ESTADO"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+         
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1379,11 +1353,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"RUTA IMAGEN", "ALT", "ESTADO"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+           
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1413,11 +1383,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
         System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "INTERNO/EXTERNO", "ANCHOR TEXT", "ESTADO"}, 0) {
-          /*  @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+        
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1445,14 +1411,10 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
     public static void selectTextoTabla(JTable jTableTexto, String idAnalisis) {
 
         String sql = "SELECT palabra,frecuencia,densidad From Texto where id_analisis ='" + idAnalisis + "'";
-        System.out.println(sql);
+       // System.out.println(sql);
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"PALABRA", "Nº VECES", "DENSIDAD(%)"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+          
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1480,11 +1442,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
 
         String sql = "SELECT id_analisis,dominio, url_principal, fecha_analisis FROM Analisis where id_analisis = '" + idAnalisis + "' ORDER BY fecha_analisis DESC ";
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"URL", "Fecha de Análisis", "Title", "Description", "Encabezados", "Imágenes", "Enlaces"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+           
         };
 
         SimpleDateFormat cambiaFormatoFecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -1523,12 +1481,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
 
     public static void selectListadoResumenErroresTabla(JTable jTableResumenErrores, String idAnalisis) {
 
-        /*  String sqlTitle = "SELECT titulo_pagina, estado From MetaTitle where id_analisis ='" + idAnalisis + "' where estado='Error'";
-        String sqlDescription = "SELECT meta_descripcion, estado From MetaDescription where id_analisis ='" + idAnalisis + "' where estado='Error'";
-        String sqlEncabezados = "SELECT nivel,contenido, estado From Encabezados where id_analisis ='" + idAnalisis + "' where estado='Error'";
-        String sqlImagenes = "SELECT ruta_imagen,alt_texto, estado From Imagenes where id_analisis ='" + idAnalisis + "' where estado='Error'";
-        String sqlEnlaces = "SELECT url_enlace,tipo,anchor_text, estado From Enlaces where id_analisis ='" + idAnalisis + "' where estado='Error'";
-        System.out.println(sqlTitle); */
+        
         String sql = "SELECT 'MetaTitle' AS origen, titulo_pagina AS detalle, 'Meta Title Vacio' AS estado "
                 + "FROM MetaTitle "
                 + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error' "
@@ -1550,11 +1503,7 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
                 + "WHERE id_analisis = '" + idAnalisis + "' AND estado = 'Error'";
 
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ERROR EN", "DETALLE", "ESTADO"}, 0) {
-           /* @Override
-            public boolean isCellEditable(int row, int column) {
-                // Deshabilita la edición para todas las celdas
-                return false;
-            }*/
+          
         };
 
         try (Connection conn = Consultas.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -1602,16 +1551,9 @@ jLabelLogo.setIcon(new ImageIcon(icono));*/
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            //   javax.swing.UIManager.getInstalledLookAndFeels();
-            //   javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
-            // javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            // Selecciona uno de los temas comentados y descoméntalo para usarlo
-            // FlatLightLaf.install();         // Tema claro predeterminado de FlatLaf
-            // FlatDarkLaf.install();       // Tema oscuro predeterminado
-            // FlatIntelliJLaf.install();   // Similar a IntelliJ IDEA Light
-            //  FlatDarculaLaf.install();    // Similar a IntelliJ IDEA Darcula
-            FlatMacLightLaf.install();   // Tema claro para macOS
-            // FlatMacDarkLaf.install();    // Tema oscuro para macOS
+            
+            FlatMacLightLaf.install();   // Tema claro  macOS
+           
 
         } catch (Exception e) {
             e.printStackTrace();

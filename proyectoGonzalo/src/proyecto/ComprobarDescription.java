@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto;
 
 import java.io.IOException;
@@ -10,14 +6,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 /**
- *
- * @author gonzaloromanmarquez
+ * Clase para comprobar la meta descripción de una página web.
+ * Utiliza Jsoup para analizar el HTML de una URL específica.
+ * Autor: Gonzalo Román Márquez
  */
 public class ComprobarDescription {
-    String url;
-    String description;
-    String estadoDescription;
+    // Atributos de la clase
+    String url;               // URL de la página a analizar
+    String description;       // Contenido de la meta descripción encontrada
+    String estadoDescription; // Estado de la meta descripción (Correcto/Error)
 
+    // Getters y setters para los atributos
     public String getUrl() {
         return url;
     }
@@ -42,48 +41,53 @@ public class ComprobarDescription {
         this.estadoDescription = estadoDescription;
     }
 
+    /**
+     * Constructor que inicializa la clase con la URL a analizar.
+     * 
+     * @param url URL de la página web.
+     */
     public ComprobarDescription(String url) {
         this.url = url;
     }
-    
-    public void comprobar(){  
-        
-          try {
 
-            // Descargar y analizar el HTML de la página web
-            Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").get();
-                  //  .get();
+    /**
+     * Método para comprobar la meta descripción de la página web.
+     * - Descarga el HTML de la URL especificada.
+     * - Busca el elemento `<meta name="description">`.
+     * - Evalúa si existe, si está vacío o si contiene texto válido.
+     */
+    public void comprobar() {
+        try {
+            // Conecta a la URL y descarga el contenido HTML
+            Document doc = Jsoup.connect(url)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                    .get();
 
-            //control analisis H1
+            // Selecciona el primer elemento <meta name="description">
             Element metaDescription = doc.selectFirst("meta[name=description]");
-            
-         if (metaDescription != null) {    
-            
-            description = metaDescription.attr("content");
-            
-            
-        
-            if (description.isEmpty() ) {
-                //title vacio
-                estadoDescription = "Error";
-                System.out.println("Error description");
+
+            // Verifica si el elemento meta descripción existe
+            if (metaDescription != null) {
+                // Obtiene el contenido del atributo "content"
+                description = metaDescription.attr("content");
+
+                // Evalúa si el contenido está vacío
+                if (description.isEmpty()) {
+                    estadoDescription = "Error"; // Meta descripción vacía
+                    System.out.println("Error: Meta descripción vacía");
+                } else {
+                    estadoDescription = "Correcto"; // Meta descripción válida
+                    System.out.println("Descripción de la página: " + description);
+                    System.out.println("Estado: Correcto");
+                }
             } else {
-                //title correcto
-                estadoDescription = "Correcto";
-                System.out.println(description);
-                System.out.println("Description de la página: " + description);
-                System.out.println("Correcto");
+                // Si no se encuentra la meta descripción
+                estadoDescription = "Error";
+                System.out.println("Error: No se encontró la meta descripción");
             }
-        } else {
-            estadoDescription = "Error";
-            System.out.println("Error: No se encontró la meta descripción");
-        }    
-            
-            
         } catch (IOException iOException) {
-              System.out.println("Errror al comprobar la Description");
+            // Manejo de errores al intentar conectar con la URL
+            System.out.println("Error al comprobar la descripción");
         }
-    
-    } 
-    
+    }
 }
