@@ -42,6 +42,10 @@ Esta aplicación está diseñada para analizar páginas web, identificar problem
    - Haz clic derecho en `instalar.exe`.  
    - Selecciona "Ejecutar como Administrador".  
 2. Sigue las instrucciones del instalador para completar la instalación.
+3. Para abrir la aplicación, clic derecho "Ejecutar como Administrador".
+   
+### También puedes ejecutar sin instalar
+   - Simplemente haz clic derecho en `analizadorseo.exe` y selecciona "Ejecutar como Administrador".
 
 #### En Linux y Mac
 
@@ -54,3 +58,15 @@ Esta aplicación está diseñada para analizar páginas web, identificar problem
 2. Ejecuta el siguiente comando:  
    ```bash
    java -jar proyecto.jar
+   
+### Capturas de pantalla:
+
+**Modo Claro**
+
+![image](https://github.com/user-attachments/assets/05156666-4b4f-43cb-92dc-8063d441a009)
+
+**Modo Oscuro**
+
+![image](https://github.com/user-attachments/assets/bbd96a0c-d1e7-49d3-b94a-ba405bfc44bf)
+
+
